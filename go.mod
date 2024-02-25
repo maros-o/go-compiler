@@ -1,3 +1,3 @@
-module awesomeProject
+module compiler
 
 go 1.22
