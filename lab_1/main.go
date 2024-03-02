@@ -23,18 +23,18 @@ var LeftAssociative = map[rune]bool{
 	'/': true,
 }
 
-type TokenType int
+type tokenType int
 
 const (
-	Operand TokenType = iota
+	Operand tokenType = iota
 	Operator
 	OpenBracket
 	CloseBracket
 )
 
-type Token struct {
+type token struct {
 	Value int32
-	Type  TokenType
+	Type  tokenType
 }
 
 func main() {
@@ -77,19 +77,19 @@ func evalLine(line string) {
 	fmt.Println(result)
 }
 
-func infixToPostfix(infix string) ([]Token, error) {
+func infixToPostfix(infix string) ([]token, error) {
 	var stack []rune
-	var output []Token
+	var output []token
 	var number []rune
 	for _, v := range infix {
 		if strings.ContainsRune(" \t\n", v) {
 			continue
 		}
-		vTokenType, err := runeToTokenType(v)
+		vtokenType, err := runeTotokenType(v)
 		if err != nil {
 			return nil, err
 		}
-		if vTokenType == Operand {
+		if vtokenType == Operand {
 			number = append(number, v)
 			continue
 		} else if len(number) > 0 {
@@ -97,27 +97,27 @@ func infixToPostfix(infix string) ([]Token, error) {
 			if err != nil {
 				return nil, err
 			}
-			output = append(output, Token{Value: numInt32, Type: Operand})
+			output = append(output, token{Value: numInt32, Type: Operand})
 			number = []rune{}
 		}
-		if vTokenType == Operator {
+		if vtokenType == Operator {
 			for len(stack) > 0 {
 				y := stack[len(stack)-1]
-				yTokenType, _ := runeToTokenType(y)
-				if yTokenType != Operator {
+				ytokenType, _ := runeTotokenType(y)
+				if ytokenType != Operator {
 					break
 				}
 				if (LeftAssociative[v] && Precedence[v] <= Precedence[y]) || (!LeftAssociative[v] && Precedence[v] < Precedence[y]) {
 					stack = stack[:len(stack)-1]
-					output = append(output, Token{Value: y, Type: Operator})
+					output = append(output, token{Value: y, Type: Operator})
 				} else {
 					break
 				}
 			}
 			stack = append(stack, v)
-		} else if vTokenType == OpenBracket {
+		} else if vtokenType == OpenBracket {
 			stack = append(stack, v)
-		} else if vTokenType == CloseBracket {
+		} else if vtokenType == CloseBracket {
 			if len(stack) == 0 {
 				return nil, errors.New("unmatched closing bracket")
 			}
@@ -127,8 +127,8 @@ func infixToPostfix(infix string) ([]Token, error) {
 				if top == '(' {
 					break
 				}
-				topTokenType, _ := runeToTokenType(top)
-				output = append(output, Token{Value: top, Type: topTokenType})
+				toptokenType, _ := runeTotokenType(top)
+				output = append(output, token{Value: top, Type: toptokenType})
 			}
 		}
 	}
@@ -137,35 +137,35 @@ func infixToPostfix(infix string) ([]Token, error) {
 		if err != nil {
 			return nil, err
 		}
-		output = append(output, Token{Value: numInt32, Type: Operand})
+		output = append(output, token{Value: numInt32, Type: Operand})
 		number = []rune{}
 	}
 	for len(stack) > 0 {
 		top := stack[len(stack)-1]
 		stack = stack[:len(stack)-1]
-		topTokenType, _ := runeToTokenType(top)
+		toptokenType, _ := runeTotokenType(top)
 
-		if topTokenType == Operand {
+		if toptokenType == Operand {
 			number = append(number, top)
 		} else if len(number) > 0 {
 			numInt32, err := runesToInt32(number)
 			if err != nil {
 				return nil, err
 			}
-			output = append(output, Token{Value: numInt32, Type: Operand})
+			output = append(output, token{Value: numInt32, Type: Operand})
 			number = []rune{}
 		}
-		if topTokenType == OpenBracket {
+		if toptokenType == OpenBracket {
 			return nil, errors.New("unmatched opening bracket")
-		} else if topTokenType == CloseBracket {
+		} else if toptokenType == CloseBracket {
 			return nil, errors.New("unmatched closing bracket")
 		}
-		output = append(output, Token{Value: top, Type: topTokenType})
+		output = append(output, token{Value: top, Type: toptokenType})
 	}
 	return output, nil
 }
 
-func runeToTokenType(r rune) (TokenType, error) {
+func runeTotokenType(r rune) (tokenType, error) {
 	if r >= '0' && r <= '9' {
 		return Operand, nil
 	}
@@ -190,8 +190,8 @@ func runesToInt32(runes []rune) (int32, error) {
 	return int32(numInt), nil
 }
 
-func evalPostfix(postfix []Token) (int, error) {
-	var stack []Token
+func evalPostfix(postfix []token) (int, error) {
+	var stack []token
 	for _, v := range postfix {
 		if v.Type == Operand {
 			stack = append(stack, v)
@@ -209,7 +209,7 @@ func evalPostfix(postfix []Token) (int, error) {
 			if err != nil {
 				return 0, err
 			}
-			stack = append(stack, Token{Value: int32(eval), Type: Operand})
+			stack = append(stack, token{Value: int32(eval), Type: Operand})
 		} else {
 			return 0, errors.New("invalid token")
 		}
