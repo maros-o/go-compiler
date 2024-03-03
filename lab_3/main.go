@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -58,10 +59,11 @@ func stringToSymbols(text string) []Symbol {
 			panic("Invalid symbol: " + string(r))
 		}
 	}
+
 	return symbols
 }
 
-func createTable(rules map[rune][][]Symbol) ([][]bool, []rune, map[rune]int) {
+func createTable(rules map[rune][][]Symbol) ([][]bool, []rune, map[rune]int, map[int]rune) {
 	uniqueTerminals := make(map[rune]bool)
 
 	for _, rules := range rules {
@@ -75,31 +77,28 @@ func createTable(rules map[rune][][]Symbol) ([][]bool, []rune, map[rune]int) {
 	}
 	runes := make([]rune, 0)
 
-	index := 0
 	for k := range rules {
 		runes = append(runes, k)
-		index++
 	}
 	for k := range uniqueTerminals {
 		runes = append(runes, k)
-		index++
 	}
-
-	for i := 0; i < len(runes); i++ {
-		for j := i + 1; j < len(runes); j++ {
-			if runes[i] > runes[j] {
-				runes[i], runes[j] = runes[j], runes[i]
-			}
-		}
-	}
+	sort.Slice(runes, func(i, j int) bool {
+		return runes[i] < runes[j]
+	})
+	runes = append(runes, 'ε')
 
 	runeToIndex := make(map[rune]int)
 	for i, r := range runes {
 		runeToIndex[r] = i
 	}
+	indexToRune := make(map[int]rune)
+	for k, v := range runeToIndex {
+		indexToRune[v] = k
+	}
 
 	nonTerminalsCount := len(rules)
-	symbolsCount := len(uniqueTerminals) + nonTerminalsCount
+	symbolsCount := len(runes)
 
 	rows := nonTerminalsCount
 	cols := symbolsCount
@@ -112,7 +111,7 @@ func createTable(rules map[rune][][]Symbol) ([][]bool, []rune, map[rune]int) {
 		}
 	}
 
-	return table, runes, runeToIndex
+	return table, runes, runeToIndex, indexToRune
 }
 
 func printTable(table [][]bool, runes []rune) {
@@ -159,33 +158,38 @@ func canAnyOutputBeEmpty(input rune, rules map[rune][][]Symbol) bool {
 	return false
 }
 
-func main() {
-	fmt.Println(os.Getwd())
-	file, err := os.Open("./lab_3/input.txt")
-	if err != nil {
-		fmt.Println("Error opening file:", err)
-		return
-	}
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-			fmt.Println("Error closing file:", err)
+func getFirst(output []Symbol, rules map[rune][][]Symbol, table [][]bool, runeToIndex map[rune]int, indexToRune map[int]rune) map[rune]bool {
+	first := make(map[rune]bool)
+
+	allCanBeEmpty := true
+	for _, symbol := range output {
+		if symbol.Type == terminal {
+			first[symbol.Value] = true
+			allCanBeEmpty = false
+			break
+		} else if symbol.Type == nonTerminal {
+			r := runeToIndex[symbol.Value]
+			for i := len(table); i < len(table[0]); i++ {
+				if table[r][i] {
+					first[indexToRune[i]] = true
+				}
+			}
+			canBeEmpty := canAnyOutputBeEmpty(symbol.Value, rules)
+			if !canBeEmpty {
+				allCanBeEmpty = false
+				break
+			}
 		}
-	}(file)
-
-	text := ""
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		text += scanner.Text()
 	}
-	text = strings.ReplaceAll(text, " ", "")
-
-	rules := parseRules(text)
-	table, runes, runeToIndex := createTable(rules)
-	indexToRune := make(map[int]rune)
-	for k, v := range runeToIndex {
-		indexToRune[v] = k
+	if allCanBeEmpty {
+		first['ε'] = true
 	}
+
+	return first
+}
+
+func printFirstOfRules(rules map[rune][][]Symbol) [][]bool {
+	table, _, runeToIndex, indexToRune := createTable(rules)
 
 	for input, outputs := range rules {
 		for _, output := range outputs {
@@ -205,6 +209,114 @@ func main() {
 		}
 	}
 
+	warshallTable(table)
+
+	orderedInputs := make([]rune, 0)
+	for k := range rules {
+		orderedInputs = append(orderedInputs, k)
+	}
+	sort.Slice(orderedInputs, func(i, j int) bool {
+		return orderedInputs[i] < orderedInputs[j]
+	})
+
+	for _, input := range orderedInputs {
+		outputs := rules[input]
+		for _, output := range outputs {
+			print("first[", string(input), ":")
+			for _, symbol := range output {
+				if symbol.Type == epsilon {
+					print("{e}")
+				} else {
+					print(string(symbol.Value))
+				}
+			}
+			print("] = ")
+
+			first := getFirst(output, rules, table, runeToIndex, indexToRune)
+
+			for k := range first {
+				if k == 'ε' {
+					print("{e} ")
+				} else {
+					print(string(k), " ")
+				}
+			}
+			println()
+		}
+	}
+
+	return table
+}
+
+func printFollowOfNonTerminals(rules map[rune][][]Symbol, firstTable [][]bool) {
+	table, runes, runeToIndex, indexToRune := createTable(rules)
+
+	table[0][len(table[0])-1] = true
+
+	for input, outputs := range rules {
+		for _, output := range outputs {
+			for idx, symbol := range output {
+				if symbol.Type == epsilon {
+					continue
+				} else if symbol.Type == terminal {
+					continue
+				} else if symbol.Type == nonTerminal {
+					if idx == len(output)-1 {
+						row := runeToIndex[symbol.Value]
+						col := runeToIndex[input]
+						table[row][col] = true
+					} else {
+						alpha := output[idx+1:]
+						first := getFirst(alpha, rules, firstTable, runeToIndex, indexToRune)
+						for k := range first {
+							if k == 'ε' {
+								continue
+							}
+							row := runeToIndex[symbol.Value]
+							col := runeToIndex[k]
+							table[row][col] = true
+						}
+					}
+				}
+			}
+		}
+	}
+
+	warshallTable(table)
+
+	nonTerminals := make(map[rune]bool)
+	for k := range rules {
+		nonTerminals[k] = true
+	}
+	uniqueNonTerminals := make([]rune, 0)
+	for k := range nonTerminals {
+		uniqueNonTerminals = append(uniqueNonTerminals, k)
+	}
+	sort.Slice(uniqueNonTerminals, func(i, j int) bool {
+		return uniqueNonTerminals[i] < uniqueNonTerminals[j]
+	})
+
+	for _, nt := range uniqueNonTerminals {
+		print("follow[", string(nt), "] = ")
+		for i := len(table); i < len(table[0]); i++ {
+			if table[runeToIndex[nt]][i] {
+				if indexToRune[i] == 'ε' {
+					print("$ ")
+				} else {
+					print(string(indexToRune[i]), " ")
+				}
+			}
+		}
+		println()
+	}
+
+	println()
+	printTable(firstTable, runes)
+	println()
+	printTable(table, runes)
+}
+
+func warshallTable(table [][]bool) {
 	rows := len(table)
 	cols := rows
 	for {
@@ -238,53 +350,32 @@ func main() {
 			}
 		}
 	}
+}
 
-	printTable(table, runes)
-
-	for input, outputs := range rules {
-		for _, output := range outputs {
-			print("first[", string(input), ":")
-			for _, symbol := range output {
-				if symbol.Type == epsilon {
-					print("{e}")
-				} else {
-					print(string(symbol.Value))
-				}
-			}
-			print("] = ")
-
-			first := make(map[rune]bool)
-			allCanBeEmpty := true
-			for _, symbol := range output {
-				if symbol.Type == terminal {
-					first[symbol.Value] = true
-					allCanBeEmpty = false
-					break
-				} else if symbol.Type == nonTerminal {
-					r := runeToIndex[symbol.Value]
-					for i := len(table); i < len(table[0]); i++ {
-						if table[r][i] {
-							first[indexToRune[i]] = true
-						}
-					}
-					canBeEmpty := canAnyOutputBeEmpty(symbol.Value, rules)
-					if !canBeEmpty {
-						allCanBeEmpty = false
-						break
-					}
-				}
-			}
-			if allCanBeEmpty {
-				first['ε'] = true
-			}
-			for k := range first {
-				if k == 'ε' {
-					print("{e} ")
-				} else {
-					print(string(k), " ")
-				}
-			}
-			println()
-		}
+func main() {
+	fmt.Println(os.Getwd())
+	file, err := os.Open("./lab_3/input.txt")
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
 	}
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			fmt.Println("Error closing file:", err)
+		}
+	}(file)
+
+	text := ""
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		text += scanner.Text()
+	}
+	text = strings.ReplaceAll(text, " ", "")
+
+	rules := parseRules(text)
+
+	firstTable := printFirstOfRules(rules)
+
+	printFollowOfNonTerminals(rules, firstTable)
 }
