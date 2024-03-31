@@ -55,7 +55,7 @@ literal: INT_LITERAL # intLiteral
        | STRING_LITERAL # stringLiteral
        ;
 
-variableList: ID (',' ID)*;
+variableList: ID (COMMA ID)*;
 
 expressionList: expression (COMMA expression)*;
 
