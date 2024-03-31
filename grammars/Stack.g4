@@ -37,7 +37,7 @@ RBRACE: '}';
 COMMA: ',';
 DOT: '.';
 COMMENT: '//' ~[\r\n]* -> skip;
-WS: [ \t\r\n]+ -> skip;
+WHITE_SPACES: [ \t\r\n]+ -> skip;
 
 // Rules
 program: statement*;
