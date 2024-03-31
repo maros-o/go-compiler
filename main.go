@@ -1,13 +1,30 @@
 package main
 
 import (
-	"fmt"
+	"bufio"
+	"log"
+	"os"
+	"strconv"
 )
 
 func main() {
-	input := "3 + 5 * 2"
+	for i := 1; i <= 3; i++ {
+		file, err := os.Open("./inputs/input_" + strconv.Itoa(i) + ".txt")
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	result := calc(input)
+		scanner := bufio.NewScanner(file)
+		lines := ""
 
-	fmt.Printf("%s = %d\n", input, result)
+		for scanner.Scan() {
+			lines += scanner.Text() + "\n"
+		}
+
+		if err := scanner.Err(); err != nil {
+			log.Fatal(err)
+		}
+
+		eval(lines)
+	}
 }
