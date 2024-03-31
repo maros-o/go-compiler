@@ -27,17 +27,29 @@ func (s *BaseStackListener) EnterProgram(ctx *ProgramContext) {}
 // ExitProgram is called when production program is exited.
 func (s *BaseStackListener) ExitProgram(ctx *ProgramContext) {}
 
-// EnterType is called when production type is entered.
-func (s *BaseStackListener) EnterType(ctx *TypeContext) {}
+// EnterIntType is called when production intType is entered.
+func (s *BaseStackListener) EnterIntType(ctx *IntTypeContext) {}
 
-// ExitType is called when production type is exited.
-func (s *BaseStackListener) ExitType(ctx *TypeContext) {}
+// ExitIntType is called when production intType is exited.
+func (s *BaseStackListener) ExitIntType(ctx *IntTypeContext) {}
 
-// EnterVariableList is called when production variableList is entered.
-func (s *BaseStackListener) EnterVariableList(ctx *VariableListContext) {}
+// EnterFloatType is called when production floatType is entered.
+func (s *BaseStackListener) EnterFloatType(ctx *FloatTypeContext) {}
 
-// ExitVariableList is called when production variableList is exited.
-func (s *BaseStackListener) ExitVariableList(ctx *VariableListContext) {}
+// ExitFloatType is called when production floatType is exited.
+func (s *BaseStackListener) ExitFloatType(ctx *FloatTypeContext) {}
+
+// EnterBoolType is called when production boolType is entered.
+func (s *BaseStackListener) EnterBoolType(ctx *BoolTypeContext) {}
+
+// ExitBoolType is called when production boolType is exited.
+func (s *BaseStackListener) ExitBoolType(ctx *BoolTypeContext) {}
+
+// EnterStringType is called when production stringType is entered.
+func (s *BaseStackListener) EnterStringType(ctx *StringTypeContext) {}
+
+// ExitStringType is called when production stringType is exited.
+func (s *BaseStackListener) ExitStringType(ctx *StringTypeContext) {}
 
 // EnterIntLiteral is called when production intLiteral is entered.
 func (s *BaseStackListener) EnterIntLiteral(ctx *IntLiteralContext) {}
@@ -68,6 +80,18 @@ func (s *BaseStackListener) EnterStringLiteral(ctx *StringLiteralContext) {}
 
 // ExitStringLiteral is called when production stringLiteral is exited.
 func (s *BaseStackListener) ExitStringLiteral(ctx *StringLiteralContext) {}
+
+// EnterVariableList is called when production variableList is entered.
+func (s *BaseStackListener) EnterVariableList(ctx *VariableListContext) {}
+
+// ExitVariableList is called when production variableList is exited.
+func (s *BaseStackListener) ExitVariableList(ctx *VariableListContext) {}
+
+// EnterExpressionList is called when production expressionList is entered.
+func (s *BaseStackListener) EnterExpressionList(ctx *ExpressionListContext) {}
+
+// ExitExpressionList is called when production expressionList is exited.
+func (s *BaseStackListener) ExitExpressionList(ctx *ExpressionListContext) {}
 
 // EnterEmptySemStatement is called when production emptySemStatement is entered.
 func (s *BaseStackListener) EnterEmptySemStatement(ctx *EmptySemStatementContext) {}
@@ -153,12 +177,6 @@ func (s *BaseStackListener) EnterParenExpression(ctx *ParenExpressionContext) {}
 // ExitParenExpression is called when production parenExpression is exited.
 func (s *BaseStackListener) ExitParenExpression(ctx *ParenExpressionContext) {}
 
-// EnterStringConcatenation is called when production stringConcatenation is entered.
-func (s *BaseStackListener) EnterStringConcatenation(ctx *StringConcatenationContext) {}
-
-// ExitStringConcatenation is called when production stringConcatenation is exited.
-func (s *BaseStackListener) ExitStringConcatenation(ctx *StringConcatenationContext) {}
-
 // EnterLiteralExpression is called when production literalExpression is entered.
 func (s *BaseStackListener) EnterLiteralExpression(ctx *LiteralExpressionContext) {}
 
@@ -177,8 +195,8 @@ func (s *BaseStackListener) EnterLogicalExpression(ctx *LogicalExpressionContext
 // ExitLogicalExpression is called when production logicalExpression is exited.
 func (s *BaseStackListener) ExitLogicalExpression(ctx *LogicalExpressionContext) {}
 
-// EnterExpressionList is called when production expressionList is entered.
-func (s *BaseStackListener) EnterExpressionList(ctx *ExpressionListContext) {}
+// EnterStringConcatExpression is called when production stringConcatExpression is entered.
+func (s *BaseStackListener) EnterStringConcatExpression(ctx *StringConcatExpressionContext) {}
 
-// ExitExpressionList is called when production expressionList is exited.
-func (s *BaseStackListener) ExitExpressionList(ctx *ExpressionListContext) {}
+// ExitStringConcatExpression is called when production stringConcatExpression is exited.
+func (s *BaseStackListener) ExitStringConcatExpression(ctx *StringConcatExpressionContext) {}

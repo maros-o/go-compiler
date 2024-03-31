@@ -11,11 +11,17 @@ type StackListener interface {
 	// EnterProgram is called when entering the program production.
 	EnterProgram(c *ProgramContext)
 
-	// EnterType is called when entering the type production.
-	EnterType(c *TypeContext)
+	// EnterIntType is called when entering the intType production.
+	EnterIntType(c *IntTypeContext)
 
-	// EnterVariableList is called when entering the variableList production.
-	EnterVariableList(c *VariableListContext)
+	// EnterFloatType is called when entering the floatType production.
+	EnterFloatType(c *FloatTypeContext)
+
+	// EnterBoolType is called when entering the boolType production.
+	EnterBoolType(c *BoolTypeContext)
+
+	// EnterStringType is called when entering the stringType production.
+	EnterStringType(c *StringTypeContext)
 
 	// EnterIntLiteral is called when entering the intLiteral production.
 	EnterIntLiteral(c *IntLiteralContext)
@@ -31,6 +37,12 @@ type StackListener interface {
 
 	// EnterStringLiteral is called when entering the stringLiteral production.
 	EnterStringLiteral(c *StringLiteralContext)
+
+	// EnterVariableList is called when entering the variableList production.
+	EnterVariableList(c *VariableListContext)
+
+	// EnterExpressionList is called when entering the expressionList production.
+	EnterExpressionList(c *ExpressionListContext)
 
 	// EnterEmptySemStatement is called when entering the emptySemStatement production.
 	EnterEmptySemStatement(c *EmptySemStatementContext)
@@ -74,9 +86,6 @@ type StackListener interface {
 	// EnterParenExpression is called when entering the parenExpression production.
 	EnterParenExpression(c *ParenExpressionContext)
 
-	// EnterStringConcatenation is called when entering the stringConcatenation production.
-	EnterStringConcatenation(c *StringConcatenationContext)
-
 	// EnterLiteralExpression is called when entering the literalExpression production.
 	EnterLiteralExpression(c *LiteralExpressionContext)
 
@@ -86,17 +95,23 @@ type StackListener interface {
 	// EnterLogicalExpression is called when entering the logicalExpression production.
 	EnterLogicalExpression(c *LogicalExpressionContext)
 
-	// EnterExpressionList is called when entering the expressionList production.
-	EnterExpressionList(c *ExpressionListContext)
+	// EnterStringConcatExpression is called when entering the stringConcatExpression production.
+	EnterStringConcatExpression(c *StringConcatExpressionContext)
 
 	// ExitProgram is called when exiting the program production.
 	ExitProgram(c *ProgramContext)
 
-	// ExitType is called when exiting the type production.
-	ExitType(c *TypeContext)
+	// ExitIntType is called when exiting the intType production.
+	ExitIntType(c *IntTypeContext)
 
-	// ExitVariableList is called when exiting the variableList production.
-	ExitVariableList(c *VariableListContext)
+	// ExitFloatType is called when exiting the floatType production.
+	ExitFloatType(c *FloatTypeContext)
+
+	// ExitBoolType is called when exiting the boolType production.
+	ExitBoolType(c *BoolTypeContext)
+
+	// ExitStringType is called when exiting the stringType production.
+	ExitStringType(c *StringTypeContext)
 
 	// ExitIntLiteral is called when exiting the intLiteral production.
 	ExitIntLiteral(c *IntLiteralContext)
@@ -112,6 +127,12 @@ type StackListener interface {
 
 	// ExitStringLiteral is called when exiting the stringLiteral production.
 	ExitStringLiteral(c *StringLiteralContext)
+
+	// ExitVariableList is called when exiting the variableList production.
+	ExitVariableList(c *VariableListContext)
+
+	// ExitExpressionList is called when exiting the expressionList production.
+	ExitExpressionList(c *ExpressionListContext)
 
 	// ExitEmptySemStatement is called when exiting the emptySemStatement production.
 	ExitEmptySemStatement(c *EmptySemStatementContext)
@@ -155,9 +176,6 @@ type StackListener interface {
 	// ExitParenExpression is called when exiting the parenExpression production.
 	ExitParenExpression(c *ParenExpressionContext)
 
-	// ExitStringConcatenation is called when exiting the stringConcatenation production.
-	ExitStringConcatenation(c *StringConcatenationContext)
-
 	// ExitLiteralExpression is called when exiting the literalExpression production.
 	ExitLiteralExpression(c *LiteralExpressionContext)
 
@@ -167,6 +185,6 @@ type StackListener interface {
 	// ExitLogicalExpression is called when exiting the logicalExpression production.
 	ExitLogicalExpression(c *LogicalExpressionContext)
 
-	// ExitExpressionList is called when exiting the expressionList production.
-	ExitExpressionList(c *ExpressionListContext)
+	// ExitStringConcatExpression is called when exiting the stringConcatExpression production.
+	ExitStringConcatExpression(c *StringConcatExpressionContext)
 }
