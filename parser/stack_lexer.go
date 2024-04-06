@@ -53,14 +53,14 @@ func stacklexerLexerInit() {
 		"IF", "ELSE", "WHILE", "ID", "INT_LITERAL", "FLOAT_LITERAL", "STRING_LITERAL",
 		"ASSIGN", "OR", "AND", "EQ", "NE", "LT", "GT", "ADD", "SUB", "MUL",
 		"DIV", "MOD", "NOT", "SEM", "LPAR", "RPAR", "LBRACE", "RBRACE", "COMMA",
-		"DOT", "COMMENT", "WS",
+		"DOT", "COMMENT", "WHITE_SPACES",
 	}
 	staticData.RuleNames = []string{
 		"INT", "FLOAT", "BOOL", "STRING", "TRUE", "FALSE", "WRITE", "READ",
 		"IF", "ELSE", "WHILE", "ID", "INT_LITERAL", "FLOAT_LITERAL", "STRING_LITERAL",
 		"ASSIGN", "OR", "AND", "EQ", "NE", "LT", "GT", "ADD", "SUB", "MUL",
 		"DIV", "MOD", "NOT", "SEM", "LPAR", "RPAR", "LBRACE", "RBRACE", "COMMA",
-		"DOT", "COMMENT", "WS",
+		"DOT", "COMMENT", "WHITE_SPACES",
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
@@ -239,5 +239,5 @@ const (
 	StackLexerCOMMA          = 34
 	StackLexerDOT            = 35
 	StackLexerCOMMENT        = 36
-	StackLexerWS             = 37
+	StackLexerWHITE_SPACES   = 37
 )

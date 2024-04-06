@@ -43,7 +43,7 @@ func stackParserInit() {
 		"IF", "ELSE", "WHILE", "ID", "INT_LITERAL", "FLOAT_LITERAL", "STRING_LITERAL",
 		"ASSIGN", "OR", "AND", "EQ", "NE", "LT", "GT", "ADD", "SUB", "MUL",
 		"DIV", "MOD", "NOT", "SEM", "LPAR", "RPAR", "LBRACE", "RBRACE", "COMMA",
-		"DOT", "COMMENT", "WS",
+		"DOT", "COMMENT", "WHITE_SPACES",
 	}
 	staticData.RuleNames = []string{
 		"program", "type", "literal", "variableList", "expressionList", "statement",
@@ -51,62 +51,60 @@ func stackParserInit() {
 	}
 	staticData.PredictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 37, 125, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 37, 121, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 1, 0, 5, 0, 16, 8, 0, 10, 0, 12, 0, 19, 9, 0,
-		1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 25, 8, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3,
-		2, 32, 8, 2, 1, 3, 1, 3, 1, 3, 5, 3, 37, 8, 3, 10, 3, 12, 3, 40, 9, 3,
-		1, 4, 1, 4, 1, 4, 5, 4, 45, 8, 4, 10, 4, 12, 4, 48, 9, 4, 1, 5, 1, 5, 1,
-		5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1,
-		5, 1, 5, 1, 5, 1, 5, 5, 5, 68, 8, 5, 10, 5, 12, 5, 71, 9, 5, 1, 5, 1, 5,
-		1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 3, 5, 81, 8, 5, 1, 5, 1, 5, 1, 5, 1,
-		5, 1, 5, 1, 5, 3, 5, 89, 8, 5, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6,
-		1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 3, 6, 106, 8, 6, 1, 6,
-		1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 5, 6,
-		120, 8, 6, 10, 6, 12, 6, 123, 9, 6, 1, 6, 0, 1, 12, 7, 0, 2, 4, 6, 8, 10,
-		12, 0, 5, 2, 0, 24, 24, 28, 28, 1, 0, 25, 27, 1, 0, 23, 24, 1, 0, 19, 22,
-		1, 0, 17, 18, 145, 0, 17, 1, 0, 0, 0, 2, 24, 1, 0, 0, 0, 4, 31, 1, 0, 0,
-		0, 6, 33, 1, 0, 0, 0, 8, 41, 1, 0, 0, 0, 10, 88, 1, 0, 0, 0, 12, 105, 1,
-		0, 0, 0, 14, 16, 3, 10, 5, 0, 15, 14, 1, 0, 0, 0, 16, 19, 1, 0, 0, 0, 17,
-		15, 1, 0, 0, 0, 17, 18, 1, 0, 0, 0, 18, 1, 1, 0, 0, 0, 19, 17, 1, 0, 0,
-		0, 20, 25, 5, 1, 0, 0, 21, 25, 5, 2, 0, 0, 22, 25, 5, 3, 0, 0, 23, 25,
-		5, 4, 0, 0, 24, 20, 1, 0, 0, 0, 24, 21, 1, 0, 0, 0, 24, 22, 1, 0, 0, 0,
-		24, 23, 1, 0, 0, 0, 25, 3, 1, 0, 0, 0, 26, 32, 5, 13, 0, 0, 27, 32, 5,
-		14, 0, 0, 28, 32, 5, 5, 0, 0, 29, 32, 5, 6, 0, 0, 30, 32, 5, 15, 0, 0,
-		31, 26, 1, 0, 0, 0, 31, 27, 1, 0, 0, 0, 31, 28, 1, 0, 0, 0, 31, 29, 1,
-		0, 0, 0, 31, 30, 1, 0, 0, 0, 32, 5, 1, 0, 0, 0, 33, 38, 5, 12, 0, 0, 34,
-		35, 5, 34, 0, 0, 35, 37, 5, 12, 0, 0, 36, 34, 1, 0, 0, 0, 37, 40, 1, 0,
-		0, 0, 38, 36, 1, 0, 0, 0, 38, 39, 1, 0, 0, 0, 39, 7, 1, 0, 0, 0, 40, 38,
-		1, 0, 0, 0, 41, 46, 3, 12, 6, 0, 42, 43, 5, 34, 0, 0, 43, 45, 3, 12, 6,
-		0, 44, 42, 1, 0, 0, 0, 45, 48, 1, 0, 0, 0, 46, 44, 1, 0, 0, 0, 46, 47,
-		1, 0, 0, 0, 47, 9, 1, 0, 0, 0, 48, 46, 1, 0, 0, 0, 49, 89, 5, 29, 0, 0,
-		50, 51, 3, 2, 1, 0, 51, 52, 3, 6, 3, 0, 52, 53, 5, 29, 0, 0, 53, 89, 1,
-		0, 0, 0, 54, 55, 3, 12, 6, 0, 55, 56, 5, 29, 0, 0, 56, 89, 1, 0, 0, 0,
-		57, 58, 5, 8, 0, 0, 58, 59, 3, 6, 3, 0, 59, 60, 5, 29, 0, 0, 60, 89, 1,
-		0, 0, 0, 61, 62, 5, 7, 0, 0, 62, 63, 3, 8, 4, 0, 63, 64, 5, 29, 0, 0, 64,
-		89, 1, 0, 0, 0, 65, 69, 5, 32, 0, 0, 66, 68, 3, 10, 5, 0, 67, 66, 1, 0,
-		0, 0, 68, 71, 1, 0, 0, 0, 69, 67, 1, 0, 0, 0, 69, 70, 1, 0, 0, 0, 70, 72,
-		1, 0, 0, 0, 71, 69, 1, 0, 0, 0, 72, 89, 5, 33, 0, 0, 73, 74, 5, 9, 0, 0,
-		74, 75, 5, 30, 0, 0, 75, 76, 3, 12, 6, 0, 76, 77, 5, 31, 0, 0, 77, 80,
-		3, 10, 5, 0, 78, 79, 5, 10, 0, 0, 79, 81, 3, 10, 5, 0, 80, 78, 1, 0, 0,
-		0, 80, 81, 1, 0, 0, 0, 81, 89, 1, 0, 0, 0, 82, 83, 5, 11, 0, 0, 83, 84,
-		5, 30, 0, 0, 84, 85, 3, 12, 6, 0, 85, 86, 5, 31, 0, 0, 86, 87, 3, 10, 5,
-		0, 87, 89, 1, 0, 0, 0, 88, 49, 1, 0, 0, 0, 88, 50, 1, 0, 0, 0, 88, 54,
-		1, 0, 0, 0, 88, 57, 1, 0, 0, 0, 88, 61, 1, 0, 0, 0, 88, 65, 1, 0, 0, 0,
-		88, 73, 1, 0, 0, 0, 88, 82, 1, 0, 0, 0, 89, 11, 1, 0, 0, 0, 90, 91, 6,
-		6, -1, 0, 91, 106, 3, 4, 2, 0, 92, 106, 5, 12, 0, 0, 93, 94, 5, 12, 0,
-		0, 94, 95, 5, 16, 0, 0, 95, 106, 3, 12, 6, 8, 96, 97, 7, 0, 0, 0, 97, 106,
-		3, 12, 6, 3, 98, 99, 5, 30, 0, 0, 99, 100, 3, 12, 6, 0, 100, 101, 5, 31,
-		0, 0, 101, 106, 1, 0, 0, 0, 102, 103, 5, 15, 0, 0, 103, 104, 5, 35, 0,
-		0, 104, 106, 5, 15, 0, 0, 105, 90, 1, 0, 0, 0, 105, 92, 1, 0, 0, 0, 105,
-		93, 1, 0, 0, 0, 105, 96, 1, 0, 0, 0, 105, 98, 1, 0, 0, 0, 105, 102, 1,
-		0, 0, 0, 106, 121, 1, 0, 0, 0, 107, 108, 10, 7, 0, 0, 108, 109, 7, 1, 0,
-		0, 109, 120, 3, 12, 6, 8, 110, 111, 10, 6, 0, 0, 111, 112, 7, 2, 0, 0,
-		112, 120, 3, 12, 6, 7, 113, 114, 10, 5, 0, 0, 114, 115, 7, 3, 0, 0, 115,
-		120, 3, 12, 6, 6, 116, 117, 10, 4, 0, 0, 117, 118, 7, 4, 0, 0, 118, 120,
-		3, 12, 6, 5, 119, 107, 1, 0, 0, 0, 119, 110, 1, 0, 0, 0, 119, 113, 1, 0,
-		0, 0, 119, 116, 1, 0, 0, 0, 120, 123, 1, 0, 0, 0, 121, 119, 1, 0, 0, 0,
-		121, 122, 1, 0, 0, 0, 122, 13, 1, 0, 0, 0, 123, 121, 1, 0, 0, 0, 11, 17,
-		24, 31, 38, 46, 69, 80, 88, 105, 119, 121,
+		1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 2, 28, 8, 2, 1, 3, 1, 3, 1,
+		3, 5, 3, 33, 8, 3, 10, 3, 12, 3, 36, 9, 3, 1, 4, 1, 4, 1, 4, 5, 4, 41,
+		8, 4, 10, 4, 12, 4, 44, 9, 4, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5,
+		1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 5, 5,
+		64, 8, 5, 10, 5, 12, 5, 67, 9, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1,
+		5, 1, 5, 3, 5, 77, 8, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 1, 5, 3, 5, 85,
+		8, 5, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6,
+		1, 6, 1, 6, 1, 6, 1, 6, 3, 6, 102, 8, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6,
+		1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 5, 6, 116, 8, 6, 10, 6, 12, 6,
+		119, 9, 6, 1, 6, 0, 1, 12, 7, 0, 2, 4, 6, 8, 10, 12, 0, 6, 1, 0, 1, 4,
+		2, 0, 24, 24, 28, 28, 1, 0, 25, 27, 1, 0, 23, 24, 1, 0, 19, 22, 1, 0, 17,
+		18, 138, 0, 17, 1, 0, 0, 0, 2, 20, 1, 0, 0, 0, 4, 27, 1, 0, 0, 0, 6, 29,
+		1, 0, 0, 0, 8, 37, 1, 0, 0, 0, 10, 84, 1, 0, 0, 0, 12, 101, 1, 0, 0, 0,
+		14, 16, 3, 10, 5, 0, 15, 14, 1, 0, 0, 0, 16, 19, 1, 0, 0, 0, 17, 15, 1,
+		0, 0, 0, 17, 18, 1, 0, 0, 0, 18, 1, 1, 0, 0, 0, 19, 17, 1, 0, 0, 0, 20,
+		21, 7, 0, 0, 0, 21, 3, 1, 0, 0, 0, 22, 28, 5, 13, 0, 0, 23, 28, 5, 14,
+		0, 0, 24, 28, 5, 5, 0, 0, 25, 28, 5, 6, 0, 0, 26, 28, 5, 15, 0, 0, 27,
+		22, 1, 0, 0, 0, 27, 23, 1, 0, 0, 0, 27, 24, 1, 0, 0, 0, 27, 25, 1, 0, 0,
+		0, 27, 26, 1, 0, 0, 0, 28, 5, 1, 0, 0, 0, 29, 34, 5, 12, 0, 0, 30, 31,
+		5, 34, 0, 0, 31, 33, 5, 12, 0, 0, 32, 30, 1, 0, 0, 0, 33, 36, 1, 0, 0,
+		0, 34, 32, 1, 0, 0, 0, 34, 35, 1, 0, 0, 0, 35, 7, 1, 0, 0, 0, 36, 34, 1,
+		0, 0, 0, 37, 42, 3, 12, 6, 0, 38, 39, 5, 34, 0, 0, 39, 41, 3, 12, 6, 0,
+		40, 38, 1, 0, 0, 0, 41, 44, 1, 0, 0, 0, 42, 40, 1, 0, 0, 0, 42, 43, 1,
+		0, 0, 0, 43, 9, 1, 0, 0, 0, 44, 42, 1, 0, 0, 0, 45, 85, 5, 29, 0, 0, 46,
+		47, 3, 2, 1, 0, 47, 48, 3, 6, 3, 0, 48, 49, 5, 29, 0, 0, 49, 85, 1, 0,
+		0, 0, 50, 51, 3, 12, 6, 0, 51, 52, 5, 29, 0, 0, 52, 85, 1, 0, 0, 0, 53,
+		54, 5, 8, 0, 0, 54, 55, 3, 6, 3, 0, 55, 56, 5, 29, 0, 0, 56, 85, 1, 0,
+		0, 0, 57, 58, 5, 7, 0, 0, 58, 59, 3, 8, 4, 0, 59, 60, 5, 29, 0, 0, 60,
+		85, 1, 0, 0, 0, 61, 65, 5, 32, 0, 0, 62, 64, 3, 10, 5, 0, 63, 62, 1, 0,
+		0, 0, 64, 67, 1, 0, 0, 0, 65, 63, 1, 0, 0, 0, 65, 66, 1, 0, 0, 0, 66, 68,
+		1, 0, 0, 0, 67, 65, 1, 0, 0, 0, 68, 85, 5, 33, 0, 0, 69, 70, 5, 9, 0, 0,
+		70, 71, 5, 30, 0, 0, 71, 72, 3, 12, 6, 0, 72, 73, 5, 31, 0, 0, 73, 76,
+		3, 10, 5, 0, 74, 75, 5, 10, 0, 0, 75, 77, 3, 10, 5, 0, 76, 74, 1, 0, 0,
+		0, 76, 77, 1, 0, 0, 0, 77, 85, 1, 0, 0, 0, 78, 79, 5, 11, 0, 0, 79, 80,
+		5, 30, 0, 0, 80, 81, 3, 12, 6, 0, 81, 82, 5, 31, 0, 0, 82, 83, 3, 10, 5,
+		0, 83, 85, 1, 0, 0, 0, 84, 45, 1, 0, 0, 0, 84, 46, 1, 0, 0, 0, 84, 50,
+		1, 0, 0, 0, 84, 53, 1, 0, 0, 0, 84, 57, 1, 0, 0, 0, 84, 61, 1, 0, 0, 0,
+		84, 69, 1, 0, 0, 0, 84, 78, 1, 0, 0, 0, 85, 11, 1, 0, 0, 0, 86, 87, 6,
+		6, -1, 0, 87, 102, 3, 4, 2, 0, 88, 102, 5, 12, 0, 0, 89, 90, 5, 12, 0,
+		0, 90, 91, 5, 16, 0, 0, 91, 102, 3, 12, 6, 6, 92, 93, 7, 1, 0, 0, 93, 102,
+		3, 12, 6, 3, 94, 95, 5, 30, 0, 0, 95, 96, 3, 12, 6, 0, 96, 97, 5, 31, 0,
+		0, 97, 102, 1, 0, 0, 0, 98, 99, 5, 15, 0, 0, 99, 100, 5, 35, 0, 0, 100,
+		102, 5, 15, 0, 0, 101, 86, 1, 0, 0, 0, 101, 88, 1, 0, 0, 0, 101, 89, 1,
+		0, 0, 0, 101, 92, 1, 0, 0, 0, 101, 94, 1, 0, 0, 0, 101, 98, 1, 0, 0, 0,
+		102, 117, 1, 0, 0, 0, 103, 104, 10, 8, 0, 0, 104, 105, 7, 2, 0, 0, 105,
+		116, 3, 12, 6, 9, 106, 107, 10, 7, 0, 0, 107, 108, 7, 3, 0, 0, 108, 116,
+		3, 12, 6, 8, 109, 110, 10, 5, 0, 0, 110, 111, 7, 4, 0, 0, 111, 116, 3,
+		12, 6, 6, 112, 113, 10, 4, 0, 0, 113, 114, 7, 5, 0, 0, 114, 116, 3, 12,
+		6, 5, 115, 103, 1, 0, 0, 0, 115, 106, 1, 0, 0, 0, 115, 109, 1, 0, 0, 0,
+		115, 112, 1, 0, 0, 0, 116, 119, 1, 0, 0, 0, 117, 115, 1, 0, 0, 0, 117,
+		118, 1, 0, 0, 0, 118, 13, 1, 0, 0, 0, 119, 117, 1, 0, 0, 0, 10, 17, 27,
+		34, 42, 65, 76, 84, 101, 115, 117,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -181,7 +179,7 @@ const (
 	StackParserCOMMA          = 34
 	StackParserDOT            = 35
 	StackParserCOMMENT        = 36
-	StackParserWS             = 37
+	StackParserWHITE_SPACES   = 37
 )
 
 // StackParser rules.
@@ -291,15 +289,13 @@ func (s *ProgramContext) ToStringTree(ruleNames []string, recog antlr.Recognizer
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-func (s *ProgramContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterProgram(s)
-	}
-}
+func (s *ProgramContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitProgram(s)
 
-func (s *ProgramContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitProgram(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -349,6 +345,13 @@ type ITypeContext interface {
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
+
+	// Getter signatures
+	INT() antlr.TerminalNode
+	FLOAT() antlr.TerminalNode
+	BOOL() antlr.TerminalNode
+	STRING() antlr.TerminalNode
+
 	// IsTypeContext differentiates from other interfaces.
 	IsTypeContext()
 }
@@ -385,8 +388,20 @@ func NewTypeContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokin
 
 func (s *TypeContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *TypeContext) CopyAll(ctx *TypeContext) {
-	s.CopyFrom(&ctx.BaseParserRuleContext)
+func (s *TypeContext) INT() antlr.TerminalNode {
+	return s.GetToken(StackParserINT, 0)
+}
+
+func (s *TypeContext) FLOAT() antlr.TerminalNode {
+	return s.GetToken(StackParserFLOAT, 0)
+}
+
+func (s *TypeContext) BOOL() antlr.TerminalNode {
+	return s.GetToken(StackParserBOOL, 0)
+}
+
+func (s *TypeContext) STRING() antlr.TerminalNode {
+	return s.GetToken(StackParserSTRING, 0)
 }
 
 func (s *TypeContext) GetRuleContext() antlr.RuleContext {
@@ -397,203 +412,32 @@ func (s *TypeContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) s
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-type FloatTypeContext struct {
-	TypeContext
-}
+func (s *TypeContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitType(s)
 
-func NewFloatTypeContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *FloatTypeContext {
-	var p = new(FloatTypeContext)
-
-	InitEmptyTypeContext(&p.TypeContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*TypeContext))
-
-	return p
-}
-
-func (s *FloatTypeContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *FloatTypeContext) FLOAT() antlr.TerminalNode {
-	return s.GetToken(StackParserFLOAT, 0)
-}
-
-func (s *FloatTypeContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterFloatType(s)
-	}
-}
-
-func (s *FloatTypeContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitFloatType(s)
-	}
-}
-
-type IntTypeContext struct {
-	TypeContext
-}
-
-func NewIntTypeContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *IntTypeContext {
-	var p = new(IntTypeContext)
-
-	InitEmptyTypeContext(&p.TypeContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*TypeContext))
-
-	return p
-}
-
-func (s *IntTypeContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *IntTypeContext) INT() antlr.TerminalNode {
-	return s.GetToken(StackParserINT, 0)
-}
-
-func (s *IntTypeContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterIntType(s)
-	}
-}
-
-func (s *IntTypeContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitIntType(s)
-	}
-}
-
-type StringTypeContext struct {
-	TypeContext
-}
-
-func NewStringTypeContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *StringTypeContext {
-	var p = new(StringTypeContext)
-
-	InitEmptyTypeContext(&p.TypeContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*TypeContext))
-
-	return p
-}
-
-func (s *StringTypeContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *StringTypeContext) STRING() antlr.TerminalNode {
-	return s.GetToken(StackParserSTRING, 0)
-}
-
-func (s *StringTypeContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterStringType(s)
-	}
-}
-
-func (s *StringTypeContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitStringType(s)
-	}
-}
-
-type BoolTypeContext struct {
-	TypeContext
-}
-
-func NewBoolTypeContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *BoolTypeContext {
-	var p = new(BoolTypeContext)
-
-	InitEmptyTypeContext(&p.TypeContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*TypeContext))
-
-	return p
-}
-
-func (s *BoolTypeContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *BoolTypeContext) BOOL() antlr.TerminalNode {
-	return s.GetToken(StackParserBOOL, 0)
-}
-
-func (s *BoolTypeContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterBoolType(s)
-	}
-}
-
-func (s *BoolTypeContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitBoolType(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
 func (p *StackParser) Type_() (localctx ITypeContext) {
 	localctx = NewTypeContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 2, StackParserRULE_type)
-	p.SetState(24)
-	p.GetErrorHandler().Sync(p)
-	if p.HasError() {
-		goto errorExit
-	}
+	var _la int
 
-	switch p.GetTokenStream().LA(1) {
-	case StackParserINT:
-		localctx = NewIntTypeContext(p, localctx)
-		p.EnterOuterAlt(localctx, 1)
-		{
-			p.SetState(20)
-			p.Match(StackParserINT)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
+	p.EnterOuterAlt(localctx, 1)
+	{
+		p.SetState(20)
+		_la = p.GetTokenStream().LA(1)
+
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&30) != 0) {
+			p.GetErrorHandler().RecoverInline(p)
+		} else {
+			p.GetErrorHandler().ReportMatch(p)
+			p.Consume()
 		}
-
-	case StackParserFLOAT:
-		localctx = NewFloatTypeContext(p, localctx)
-		p.EnterOuterAlt(localctx, 2)
-		{
-			p.SetState(21)
-			p.Match(StackParserFLOAT)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-
-	case StackParserBOOL:
-		localctx = NewBoolTypeContext(p, localctx)
-		p.EnterOuterAlt(localctx, 3)
-		{
-			p.SetState(22)
-			p.Match(StackParserBOOL)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-
-	case StackParserSTRING:
-		localctx = NewStringTypeContext(p, localctx)
-		p.EnterOuterAlt(localctx, 4)
-		{
-			p.SetState(23)
-			p.Match(StackParserSTRING)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-
-	default:
-		p.SetError(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
-		goto errorExit
 	}
 
 errorExit:
@@ -685,15 +529,13 @@ func (s *FalseLiteralContext) FALSE() antlr.TerminalNode {
 	return s.GetToken(StackParserFALSE, 0)
 }
 
-func (s *FalseLiteralContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterFalseLiteral(s)
-	}
-}
+func (s *FalseLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitFalseLiteral(s)
 
-func (s *FalseLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitFalseLiteral(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -719,15 +561,13 @@ func (s *StringLiteralContext) STRING_LITERAL() antlr.TerminalNode {
 	return s.GetToken(StackParserSTRING_LITERAL, 0)
 }
 
-func (s *StringLiteralContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterStringLiteral(s)
-	}
-}
+func (s *StringLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitStringLiteral(s)
 
-func (s *StringLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitStringLiteral(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -753,15 +593,13 @@ func (s *IntLiteralContext) INT_LITERAL() antlr.TerminalNode {
 	return s.GetToken(StackParserINT_LITERAL, 0)
 }
 
-func (s *IntLiteralContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterIntLiteral(s)
-	}
-}
+func (s *IntLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitIntLiteral(s)
 
-func (s *IntLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitIntLiteral(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -787,15 +625,13 @@ func (s *FloatLiteralContext) FLOAT_LITERAL() antlr.TerminalNode {
 	return s.GetToken(StackParserFLOAT_LITERAL, 0)
 }
 
-func (s *FloatLiteralContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterFloatLiteral(s)
-	}
-}
+func (s *FloatLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitFloatLiteral(s)
 
-func (s *FloatLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitFloatLiteral(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -821,22 +657,20 @@ func (s *TrueLiteralContext) TRUE() antlr.TerminalNode {
 	return s.GetToken(StackParserTRUE, 0)
 }
 
-func (s *TrueLiteralContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterTrueLiteral(s)
-	}
-}
+func (s *TrueLiteralContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitTrueLiteral(s)
 
-func (s *TrueLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitTrueLiteral(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
 func (p *StackParser) Literal() (localctx ILiteralContext) {
 	localctx = NewLiteralContext(p, p.GetParserRuleContext(), p.GetState())
 	p.EnterRule(localctx, 4, StackParserRULE_literal)
-	p.SetState(31)
+	p.SetState(27)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -847,7 +681,7 @@ func (p *StackParser) Literal() (localctx ILiteralContext) {
 		localctx = NewIntLiteralContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(26)
+			p.SetState(22)
 			p.Match(StackParserINT_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -859,7 +693,7 @@ func (p *StackParser) Literal() (localctx ILiteralContext) {
 		localctx = NewFloatLiteralContext(p, localctx)
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(27)
+			p.SetState(23)
 			p.Match(StackParserFLOAT_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -871,7 +705,7 @@ func (p *StackParser) Literal() (localctx ILiteralContext) {
 		localctx = NewTrueLiteralContext(p, localctx)
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(28)
+			p.SetState(24)
 			p.Match(StackParserTRUE)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -883,7 +717,7 @@ func (p *StackParser) Literal() (localctx ILiteralContext) {
 		localctx = NewFalseLiteralContext(p, localctx)
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(29)
+			p.SetState(25)
 			p.Match(StackParserFALSE)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -895,7 +729,7 @@ func (p *StackParser) Literal() (localctx ILiteralContext) {
 		localctx = NewStringLiteralContext(p, localctx)
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(30)
+			p.SetState(26)
 			p.Match(StackParserSTRING_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -994,15 +828,13 @@ func (s *VariableListContext) ToStringTree(ruleNames []string, recog antlr.Recog
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-func (s *VariableListContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterVariableList(s)
-	}
-}
+func (s *VariableListContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitVariableList(s)
 
-func (s *VariableListContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitVariableList(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -1013,14 +845,14 @@ func (p *StackParser) VariableList() (localctx IVariableListContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(33)
+		p.SetState(29)
 		p.Match(StackParserID)
 		if p.HasError() {
 			// Recognition error - abort rule
 			goto errorExit
 		}
 	}
-	p.SetState(38)
+	p.SetState(34)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -1029,7 +861,7 @@ func (p *StackParser) VariableList() (localctx IVariableListContext) {
 
 	for _la == StackParserCOMMA {
 		{
-			p.SetState(34)
+			p.SetState(30)
 			p.Match(StackParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1037,7 +869,7 @@ func (p *StackParser) VariableList() (localctx IVariableListContext) {
 			}
 		}
 		{
-			p.SetState(35)
+			p.SetState(31)
 			p.Match(StackParserID)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1045,7 +877,7 @@ func (p *StackParser) VariableList() (localctx IVariableListContext) {
 			}
 		}
 
-		p.SetState(40)
+		p.SetState(36)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -1172,15 +1004,13 @@ func (s *ExpressionListContext) ToStringTree(ruleNames []string, recog antlr.Rec
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-func (s *ExpressionListContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterExpressionList(s)
-	}
-}
+func (s *ExpressionListContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitExpressionList(s)
 
-func (s *ExpressionListContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitExpressionList(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -1191,10 +1021,10 @@ func (p *StackParser) ExpressionList() (localctx IExpressionListContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(41)
+		p.SetState(37)
 		p.expression(0)
 	}
-	p.SetState(46)
+	p.SetState(42)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -1203,7 +1033,7 @@ func (p *StackParser) ExpressionList() (localctx IExpressionListContext) {
 
 	for _la == StackParserCOMMA {
 		{
-			p.SetState(42)
+			p.SetState(38)
 			p.Match(StackParserCOMMA)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1211,11 +1041,11 @@ func (p *StackParser) ExpressionList() (localctx IExpressionListContext) {
 			}
 		}
 		{
-			p.SetState(43)
+			p.SetState(39)
 			p.expression(0)
 		}
 
-		p.SetState(48)
+		p.SetState(44)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -1344,15 +1174,13 @@ func (s *VariableStatementContext) SEM() antlr.TerminalNode {
 	return s.GetToken(StackParserSEM, 0)
 }
 
-func (s *VariableStatementContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterVariableStatement(s)
-	}
-}
+func (s *VariableStatementContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitVariableStatement(s)
 
-func (s *VariableStatementContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitVariableStatement(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -1418,69 +1246,13 @@ func (s *WhileStatementContext) Statement() IStatementContext {
 	return t.(IStatementContext)
 }
 
-func (s *WhileStatementContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterWhileStatement(s)
-	}
-}
+func (s *WhileStatementContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitWhileStatement(s)
 
-func (s *WhileStatementContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitWhileStatement(s)
-	}
-}
-
-type WriteStatementContext struct {
-	StatementContext
-}
-
-func NewWriteStatementContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *WriteStatementContext {
-	var p = new(WriteStatementContext)
-
-	InitEmptyStatementContext(&p.StatementContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*StatementContext))
-
-	return p
-}
-
-func (s *WriteStatementContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *WriteStatementContext) WRITE() antlr.TerminalNode {
-	return s.GetToken(StackParserWRITE, 0)
-}
-
-func (s *WriteStatementContext) ExpressionList() IExpressionListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExpressionListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IExpressionListContext)
-}
-
-func (s *WriteStatementContext) SEM() antlr.TerminalNode {
-	return s.GetToken(StackParserSEM, 0)
-}
-
-func (s *WriteStatementContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterWriteStatement(s)
-	}
-}
-
-func (s *WriteStatementContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitWriteStatement(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -1551,15 +1323,13 @@ func (s *BlockStatementContext) Statement(i int) IStatementContext {
 	return t.(IStatementContext)
 }
 
-func (s *BlockStatementContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterBlockStatement(s)
-	}
-}
+func (s *BlockStatementContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitBlockStatement(s)
 
-func (s *BlockStatementContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitBlockStatement(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -1605,15 +1375,13 @@ func (s *ReadStatementContext) SEM() antlr.TerminalNode {
 	return s.GetToken(StackParserSEM, 0)
 }
 
-func (s *ReadStatementContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterReadStatement(s)
-	}
-}
+func (s *ReadStatementContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitReadStatement(s)
 
-func (s *ReadStatementContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitReadStatement(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -1655,15 +1423,65 @@ func (s *ExpressionStatementContext) SEM() antlr.TerminalNode {
 	return s.GetToken(StackParserSEM, 0)
 }
 
-func (s *ExpressionStatementContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterExpressionStatement(s)
+func (s *ExpressionStatementContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitExpressionStatement(s)
+
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
-func (s *ExpressionStatementContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitExpressionStatement(s)
+type WriteStatementBBNContext struct {
+	StatementContext
+}
+
+func NewWriteStatementBBNContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *WriteStatementBBNContext {
+	var p = new(WriteStatementBBNContext)
+
+	InitEmptyStatementContext(&p.StatementContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*StatementContext))
+
+	return p
+}
+
+func (s *WriteStatementBBNContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *WriteStatementBBNContext) WRITE() antlr.TerminalNode {
+	return s.GetToken(StackParserWRITE, 0)
+}
+
+func (s *WriteStatementBBNContext) ExpressionList() IExpressionListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IExpressionListContext)
+}
+
+func (s *WriteStatementBBNContext) SEM() antlr.TerminalNode {
+	return s.GetToken(StackParserSEM, 0)
+}
+
+func (s *WriteStatementBBNContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitWriteStatementBBN(s)
+
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -1758,15 +1576,13 @@ func (s *IfStatementContext) ELSE() antlr.TerminalNode {
 	return s.GetToken(StackParserELSE, 0)
 }
 
-func (s *IfStatementContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterIfStatement(s)
-	}
-}
+func (s *IfStatementContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitIfStatement(s)
 
-func (s *IfStatementContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitIfStatement(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -1792,15 +1608,13 @@ func (s *EmptySemStatementContext) SEM() antlr.TerminalNode {
 	return s.GetToken(StackParserSEM, 0)
 }
 
-func (s *EmptySemStatementContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterEmptySemStatement(s)
-	}
-}
+func (s *EmptySemStatementContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitEmptySemStatement(s)
 
-func (s *EmptySemStatementContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitEmptySemStatement(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -1809,7 +1623,7 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 	p.EnterRule(localctx, 10, StackParserRULE_statement)
 	var _la int
 
-	p.SetState(88)
+	p.SetState(84)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
@@ -1820,7 +1634,7 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 		localctx = NewEmptySemStatementContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(49)
+			p.SetState(45)
 			p.Match(StackParserSEM)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1832,15 +1646,15 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 		localctx = NewVariableStatementContext(p, localctx)
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(50)
+			p.SetState(46)
 			p.Type_()
 		}
 		{
-			p.SetState(51)
+			p.SetState(47)
 			p.VariableList()
 		}
 		{
-			p.SetState(52)
+			p.SetState(48)
 			p.Match(StackParserSEM)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1852,11 +1666,11 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 		localctx = NewExpressionStatementContext(p, localctx)
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(54)
+			p.SetState(50)
 			p.expression(0)
 		}
 		{
-			p.SetState(55)
+			p.SetState(51)
 			p.Match(StackParserSEM)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1868,7 +1682,7 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 		localctx = NewReadStatementContext(p, localctx)
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(57)
+			p.SetState(53)
 			p.Match(StackParserREAD)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1876,11 +1690,11 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 			}
 		}
 		{
-			p.SetState(58)
+			p.SetState(54)
 			p.VariableList()
 		}
 		{
-			p.SetState(59)
+			p.SetState(55)
 			p.Match(StackParserSEM)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1889,10 +1703,10 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 		}
 
 	case StackParserWRITE:
-		localctx = NewWriteStatementContext(p, localctx)
+		localctx = NewWriteStatementBBNContext(p, localctx)
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(61)
+			p.SetState(57)
 			p.Match(StackParserWRITE)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1900,11 +1714,11 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 			}
 		}
 		{
-			p.SetState(62)
+			p.SetState(58)
 			p.ExpressionList()
 		}
 		{
-			p.SetState(63)
+			p.SetState(59)
 			p.Match(StackParserSEM)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1916,14 +1730,14 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 		localctx = NewBlockStatementContext(p, localctx)
 		p.EnterOuterAlt(localctx, 6)
 		{
-			p.SetState(65)
+			p.SetState(61)
 			p.Match(StackParserLBRACE)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
 			}
 		}
-		p.SetState(69)
+		p.SetState(65)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
@@ -1932,11 +1746,11 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 
 		for (int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&6190857214) != 0 {
 			{
-				p.SetState(66)
+				p.SetState(62)
 				p.Statement()
 			}
 
-			p.SetState(71)
+			p.SetState(67)
 			p.GetErrorHandler().Sync(p)
 			if p.HasError() {
 				goto errorExit
@@ -1944,7 +1758,7 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 			_la = p.GetTokenStream().LA(1)
 		}
 		{
-			p.SetState(72)
+			p.SetState(68)
 			p.Match(StackParserRBRACE)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1956,7 +1770,7 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 		localctx = NewIfStatementContext(p, localctx)
 		p.EnterOuterAlt(localctx, 7)
 		{
-			p.SetState(73)
+			p.SetState(69)
 			p.Match(StackParserIF)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1964,7 +1778,7 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 			}
 		}
 		{
-			p.SetState(74)
+			p.SetState(70)
 			p.Match(StackParserLPAR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1972,11 +1786,11 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 			}
 		}
 		{
-			p.SetState(75)
+			p.SetState(71)
 			p.expression(0)
 		}
 		{
-			p.SetState(76)
+			p.SetState(72)
 			p.Match(StackParserRPAR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -1984,15 +1798,15 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 			}
 		}
 		{
-			p.SetState(77)
+			p.SetState(73)
 			p.Statement()
 		}
-		p.SetState(80)
+		p.SetState(76)
 		p.GetErrorHandler().Sync(p)
 
-		if p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 6, p.GetParserRuleContext()) == 1 {
+		if p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 5, p.GetParserRuleContext()) == 1 {
 			{
-				p.SetState(78)
+				p.SetState(74)
 				p.Match(StackParserELSE)
 				if p.HasError() {
 					// Recognition error - abort rule
@@ -2000,7 +1814,7 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 				}
 			}
 			{
-				p.SetState(79)
+				p.SetState(75)
 				p.Statement()
 			}
 
@@ -2012,7 +1826,7 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 		localctx = NewWhileStatementContext(p, localctx)
 		p.EnterOuterAlt(localctx, 8)
 		{
-			p.SetState(82)
+			p.SetState(78)
 			p.Match(StackParserWHILE)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2020,7 +1834,7 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 			}
 		}
 		{
-			p.SetState(83)
+			p.SetState(79)
 			p.Match(StackParserLPAR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2028,11 +1842,11 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 			}
 		}
 		{
-			p.SetState(84)
+			p.SetState(80)
 			p.expression(0)
 		}
 		{
-			p.SetState(85)
+			p.SetState(81)
 			p.Match(StackParserRPAR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2040,7 +1854,7 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 			}
 		}
 		{
-			p.SetState(86)
+			p.SetState(82)
 			p.Statement()
 		}
 
@@ -2192,15 +2006,13 @@ func (s *MulDivModExpressionContext) MOD() antlr.TerminalNode {
 	return s.GetToken(StackParserMOD, 0)
 }
 
-func (s *MulDivModExpressionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterMulDivModExpression(s)
-	}
-}
+func (s *MulDivModExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitMulDivModExpression(s)
 
-func (s *MulDivModExpressionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitMulDivModExpression(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -2226,15 +2038,13 @@ func (s *IdExpressionContext) ID() antlr.TerminalNode {
 	return s.GetToken(StackParserID, 0)
 }
 
-func (s *IdExpressionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterIdExpression(s)
-	}
-}
+func (s *IdExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitIdExpression(s)
 
-func (s *IdExpressionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitIdExpression(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -2310,15 +2120,13 @@ func (s *AddSubExpressionContext) SUB() antlr.TerminalNode {
 	return s.GetToken(StackParserSUB, 0)
 }
 
-func (s *AddSubExpressionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterAddSubExpression(s)
-	}
-}
+func (s *AddSubExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitAddSubExpression(s)
 
-func (s *AddSubExpressionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitAddSubExpression(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -2364,15 +2172,13 @@ func (s *AssignExpressionContext) Expression() IExpressionContext {
 	return t.(IExpressionContext)
 }
 
-func (s *AssignExpressionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterAssignExpression(s)
-	}
-}
+func (s *AssignExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitAssignExpression(s)
 
-func (s *AssignExpressionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitAssignExpression(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -2456,15 +2262,13 @@ func (s *ComparisonExpressionContext) NE() antlr.TerminalNode {
 	return s.GetToken(StackParserNE, 0)
 }
 
-func (s *ComparisonExpressionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterComparisonExpression(s)
-	}
-}
+func (s *ComparisonExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitComparisonExpression(s)
 
-func (s *ComparisonExpressionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitComparisonExpression(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -2510,15 +2314,13 @@ func (s *ParenExpressionContext) RPAR() antlr.TerminalNode {
 	return s.GetToken(StackParserRPAR, 0)
 }
 
-func (s *ParenExpressionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterParenExpression(s)
-	}
-}
+func (s *ParenExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitParenExpression(s)
 
-func (s *ParenExpressionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitParenExpression(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -2556,15 +2358,13 @@ func (s *LiteralExpressionContext) Literal() ILiteralContext {
 	return t.(ILiteralContext)
 }
 
-func (s *LiteralExpressionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterLiteralExpression(s)
-	}
-}
+func (s *LiteralExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitLiteralExpression(s)
 
-func (s *LiteralExpressionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitLiteralExpression(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -2615,15 +2415,13 @@ func (s *UnaryExpressionContext) SUB() antlr.TerminalNode {
 	return s.GetToken(StackParserSUB, 0)
 }
 
-func (s *UnaryExpressionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterUnaryExpression(s)
-	}
-}
+func (s *UnaryExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitUnaryExpression(s)
 
-func (s *UnaryExpressionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitUnaryExpression(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -2699,15 +2497,13 @@ func (s *LogicalExpressionContext) OR() antlr.TerminalNode {
 	return s.GetToken(StackParserOR, 0)
 }
 
-func (s *LogicalExpressionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterLogicalExpression(s)
-	}
-}
+func (s *LogicalExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitLogicalExpression(s)
 
-func (s *LogicalExpressionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitLogicalExpression(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -2741,15 +2537,13 @@ func (s *StringConcatExpressionContext) DOT() antlr.TerminalNode {
 	return s.GetToken(StackParserDOT, 0)
 }
 
-func (s *StringConcatExpressionContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.EnterStringConcatExpression(s)
-	}
-}
+func (s *StringConcatExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitStringConcatExpression(s)
 
-func (s *StringConcatExpressionContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(StackListener); ok {
-		listenerT.ExitStringConcatExpression(s)
+	default:
+		return t.VisitChildren(s)
 	}
 }
 
@@ -2771,20 +2565,20 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(105)
+	p.SetState(101)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
 
-	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 8, p.GetParserRuleContext()) {
+	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 7, p.GetParserRuleContext()) {
 	case 1:
 		localctx = NewLiteralExpressionContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 
 		{
-			p.SetState(91)
+			p.SetState(87)
 			p.Literal()
 		}
 
@@ -2793,7 +2587,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(92)
+			p.SetState(88)
 			p.Match(StackParserID)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2806,7 +2600,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(93)
+			p.SetState(89)
 			p.Match(StackParserID)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2814,7 +2608,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 			}
 		}
 		{
-			p.SetState(94)
+			p.SetState(90)
 			p.Match(StackParserASSIGN)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2822,8 +2616,8 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 			}
 		}
 		{
-			p.SetState(95)
-			p.expression(8)
+			p.SetState(91)
+			p.expression(6)
 		}
 
 	case 4:
@@ -2831,7 +2625,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(96)
+			p.SetState(92)
 
 			var _lt = p.GetTokenStream().LT(1)
 
@@ -2849,7 +2643,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 			}
 		}
 		{
-			p.SetState(97)
+			p.SetState(93)
 			p.expression(3)
 		}
 
@@ -2858,7 +2652,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(98)
+			p.SetState(94)
 			p.Match(StackParserLPAR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2866,11 +2660,11 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 			}
 		}
 		{
-			p.SetState(99)
+			p.SetState(95)
 			p.expression(0)
 		}
 		{
-			p.SetState(100)
+			p.SetState(96)
 			p.Match(StackParserRPAR)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2883,7 +2677,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(102)
+			p.SetState(98)
 			p.Match(StackParserSTRING_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2891,7 +2685,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 			}
 		}
 		{
-			p.SetState(103)
+			p.SetState(99)
 			p.Match(StackParserDOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2899,7 +2693,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 			}
 		}
 		{
-			p.SetState(104)
+			p.SetState(100)
 			p.Match(StackParserSTRING_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2911,12 +2705,12 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 		goto errorExit
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(121)
+	p.SetState(117)
 	p.GetErrorHandler().Sync(p)
 	if p.HasError() {
 		goto errorExit
 	}
-	_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 10, p.GetParserRuleContext())
+	_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 9, p.GetParserRuleContext())
 	if p.HasError() {
 		goto errorExit
 	}
@@ -2926,24 +2720,24 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 				p.TriggerExitRuleEvent()
 			}
 			_prevctx = localctx
-			p.SetState(119)
+			p.SetState(115)
 			p.GetErrorHandler().Sync(p)
 			if p.HasError() {
 				goto errorExit
 			}
 
-			switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 9, p.GetParserRuleContext()) {
+			switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 8, p.GetParserRuleContext()) {
 			case 1:
 				localctx = NewMulDivModExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, StackParserRULE_expression)
-				p.SetState(107)
+				p.SetState(103)
 
-				if !(p.Precpred(p.GetParserRuleContext(), 7)) {
-					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 7)", ""))
+				if !(p.Precpred(p.GetParserRuleContext(), 8)) {
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 8)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(108)
+					p.SetState(104)
 
 					var _lt = p.GetTokenStream().LT(1)
 
@@ -2961,21 +2755,21 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(109)
-					p.expression(8)
+					p.SetState(105)
+					p.expression(9)
 				}
 
 			case 2:
 				localctx = NewAddSubExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, StackParserRULE_expression)
-				p.SetState(110)
+				p.SetState(106)
 
-				if !(p.Precpred(p.GetParserRuleContext(), 6)) {
-					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 6)", ""))
+				if !(p.Precpred(p.GetParserRuleContext(), 7)) {
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 7)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(111)
+					p.SetState(107)
 
 					var _lt = p.GetTokenStream().LT(1)
 
@@ -2993,21 +2787,21 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(112)
-					p.expression(7)
+					p.SetState(108)
+					p.expression(8)
 				}
 
 			case 3:
 				localctx = NewComparisonExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, StackParserRULE_expression)
-				p.SetState(113)
+				p.SetState(109)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(114)
+					p.SetState(110)
 
 					var _lt = p.GetTokenStream().LT(1)
 
@@ -3025,21 +2819,21 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(115)
+					p.SetState(111)
 					p.expression(6)
 				}
 
 			case 4:
 				localctx = NewLogicalExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, StackParserRULE_expression)
-				p.SetState(116)
+				p.SetState(112)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 4)) {
 					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(117)
+					p.SetState(113)
 
 					var _lt = p.GetTokenStream().LT(1)
 
@@ -3057,7 +2851,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(118)
+					p.SetState(114)
 					p.expression(5)
 				}
 
@@ -3066,12 +2860,12 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 			}
 
 		}
-		p.SetState(123)
+		p.SetState(119)
 		p.GetErrorHandler().Sync(p)
 		if p.HasError() {
 			goto errorExit
 		}
-		_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 10, p.GetParserRuleContext())
+		_alt = p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 9, p.GetParserRuleContext())
 		if p.HasError() {
 			goto errorExit
 		}
@@ -3107,10 +2901,10 @@ func (p *StackParser) Sempred(localctx antlr.RuleContext, ruleIndex, predIndex i
 func (p *StackParser) Expression_Sempred(localctx antlr.RuleContext, predIndex int) bool {
 	switch predIndex {
 	case 0:
-		return p.Precpred(p.GetParserRuleContext(), 7)
+		return p.Precpred(p.GetParserRuleContext(), 8)
 
 	case 1:
-		return p.Precpred(p.GetParserRuleContext(), 6)
+		return p.Precpred(p.GetParserRuleContext(), 7)
 
 	case 2:
 		return p.Precpred(p.GetParserRuleContext(), 5)

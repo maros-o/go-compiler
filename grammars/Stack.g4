@@ -42,10 +42,10 @@ WHITE_SPACES: [ \t\r\n]+ -> skip;
 // Rules
 program: statement*;
 
-type: INT # intType
-    | FLOAT # floatType
-    | BOOL # boolType
-    | STRING # stringType
+type: INT
+    | FLOAT
+    | BOOL
+    | STRING
     ;
 
 literal: INT_LITERAL # intLiteral
@@ -63,15 +63,13 @@ statement: SEM # emptySemStatement
          | type variableList SEM # variableStatement
          | expression SEM # expressionStatement
          | READ variableList SEM # readStatement
-         | WRITE expressionList SEM # writeStatement
+         | WRITE expressionList SEM # writeStatementBBN
          | LBRACE statement* RBRACE # blockStatement
          | IF LPAR expression RPAR statement (ELSE statement)? # ifStatement
          | WHILE LPAR expression RPAR statement # whileStatement
          ;
 
 expression: literal # literalExpression
-          | ID # idExpression
-          | ID ASSIGN expression # assignExpression
           | expression op=(MUL | DIV | MOD) expression # mulDivModExpression
           | expression op=(ADD | SUB) expression # addSubExpression
           | expression op=(LT | GT | EQ | NE) expression # comparisonExpression
@@ -79,5 +77,7 @@ expression: literal # literalExpression
           | op=(NOT | SUB) expression # unaryExpression
           | LPAR expression RPAR # parenExpression
           | STRING_LITERAL DOT STRING_LITERAL # stringConcatExpression
+          | ID ASSIGN expression # assignExpression
+          | ID # idExpression
           ;
 
