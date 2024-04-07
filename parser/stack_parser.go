@@ -63,8 +63,8 @@ func stackParserInit() {
 		1, 6, 1, 6, 1, 6, 1, 6, 3, 6, 102, 8, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6,
 		1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 1, 6, 5, 6, 116, 8, 6, 10, 6, 12, 6,
 		119, 9, 6, 1, 6, 0, 1, 12, 7, 0, 2, 4, 6, 8, 10, 12, 0, 6, 1, 0, 1, 4,
-		2, 0, 24, 24, 28, 28, 1, 0, 25, 27, 1, 0, 23, 24, 1, 0, 19, 22, 1, 0, 17,
-		18, 138, 0, 17, 1, 0, 0, 0, 2, 20, 1, 0, 0, 0, 4, 27, 1, 0, 0, 0, 6, 29,
+		2, 0, 24, 24, 28, 28, 1, 0, 19, 22, 1, 0, 17, 18, 1, 0, 25, 27, 1, 0, 23,
+		24, 138, 0, 17, 1, 0, 0, 0, 2, 20, 1, 0, 0, 0, 4, 27, 1, 0, 0, 0, 6, 29,
 		1, 0, 0, 0, 8, 37, 1, 0, 0, 0, 10, 84, 1, 0, 0, 0, 12, 101, 1, 0, 0, 0,
 		14, 16, 3, 10, 5, 0, 15, 14, 1, 0, 0, 0, 16, 19, 1, 0, 0, 0, 17, 15, 1,
 		0, 0, 0, 17, 18, 1, 0, 0, 0, 18, 1, 1, 0, 0, 0, 19, 17, 1, 0, 0, 0, 20,
@@ -91,17 +91,17 @@ func stackParserInit() {
 		0, 83, 85, 1, 0, 0, 0, 84, 45, 1, 0, 0, 0, 84, 46, 1, 0, 0, 0, 84, 50,
 		1, 0, 0, 0, 84, 53, 1, 0, 0, 0, 84, 57, 1, 0, 0, 0, 84, 61, 1, 0, 0, 0,
 		84, 69, 1, 0, 0, 0, 84, 78, 1, 0, 0, 0, 85, 11, 1, 0, 0, 0, 86, 87, 6,
-		6, -1, 0, 87, 102, 3, 4, 2, 0, 88, 102, 5, 12, 0, 0, 89, 90, 5, 12, 0,
-		0, 90, 91, 5, 16, 0, 0, 91, 102, 3, 12, 6, 6, 92, 93, 7, 1, 0, 0, 93, 102,
-		3, 12, 6, 3, 94, 95, 5, 30, 0, 0, 95, 96, 3, 12, 6, 0, 96, 97, 5, 31, 0,
-		0, 97, 102, 1, 0, 0, 0, 98, 99, 5, 15, 0, 0, 99, 100, 5, 35, 0, 0, 100,
-		102, 5, 15, 0, 0, 101, 86, 1, 0, 0, 0, 101, 88, 1, 0, 0, 0, 101, 89, 1,
-		0, 0, 0, 101, 92, 1, 0, 0, 0, 101, 94, 1, 0, 0, 0, 101, 98, 1, 0, 0, 0,
+		6, -1, 0, 87, 88, 5, 30, 0, 0, 88, 89, 3, 12, 6, 0, 89, 90, 5, 31, 0, 0,
+		90, 102, 1, 0, 0, 0, 91, 92, 7, 1, 0, 0, 92, 102, 3, 12, 6, 9, 93, 94,
+		5, 15, 0, 0, 94, 95, 5, 35, 0, 0, 95, 102, 5, 15, 0, 0, 96, 102, 3, 4,
+		2, 0, 97, 98, 5, 12, 0, 0, 98, 99, 5, 16, 0, 0, 99, 102, 3, 12, 6, 2, 100,
+		102, 5, 12, 0, 0, 101, 86, 1, 0, 0, 0, 101, 91, 1, 0, 0, 0, 101, 93, 1,
+		0, 0, 0, 101, 96, 1, 0, 0, 0, 101, 97, 1, 0, 0, 0, 101, 100, 1, 0, 0, 0,
 		102, 117, 1, 0, 0, 0, 103, 104, 10, 8, 0, 0, 104, 105, 7, 2, 0, 0, 105,
 		116, 3, 12, 6, 9, 106, 107, 10, 7, 0, 0, 107, 108, 7, 3, 0, 0, 108, 116,
-		3, 12, 6, 8, 109, 110, 10, 5, 0, 0, 110, 111, 7, 4, 0, 0, 111, 116, 3,
-		12, 6, 6, 112, 113, 10, 4, 0, 0, 113, 114, 7, 5, 0, 0, 114, 116, 3, 12,
-		6, 5, 115, 103, 1, 0, 0, 0, 115, 106, 1, 0, 0, 0, 115, 109, 1, 0, 0, 0,
+		3, 12, 6, 8, 109, 110, 10, 6, 0, 0, 110, 111, 7, 4, 0, 0, 111, 116, 3,
+		12, 6, 7, 112, 113, 10, 5, 0, 0, 113, 114, 7, 5, 0, 0, 114, 116, 3, 12,
+		6, 6, 115, 103, 1, 0, 0, 0, 115, 106, 1, 0, 0, 0, 115, 109, 1, 0, 0, 0,
 		115, 112, 1, 0, 0, 0, 116, 119, 1, 0, 0, 0, 117, 115, 1, 0, 0, 0, 117,
 		118, 1, 0, 0, 0, 118, 13, 1, 0, 0, 0, 119, 117, 1, 0, 0, 0, 10, 17, 27,
 		34, 42, 65, 76, 84, 101, 115, 117,
@@ -1256,6 +1256,58 @@ func (s *WhileStatementContext) Accept(visitor antlr.ParseTreeVisitor) interface
 	}
 }
 
+type WriteStatementContext struct {
+	StatementContext
+}
+
+func NewWriteStatementContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *WriteStatementContext {
+	var p = new(WriteStatementContext)
+
+	InitEmptyStatementContext(&p.StatementContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*StatementContext))
+
+	return p
+}
+
+func (s *WriteStatementContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *WriteStatementContext) WRITE() antlr.TerminalNode {
+	return s.GetToken(StackParserWRITE, 0)
+}
+
+func (s *WriteStatementContext) ExpressionList() IExpressionListContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExpressionListContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IExpressionListContext)
+}
+
+func (s *WriteStatementContext) SEM() antlr.TerminalNode {
+	return s.GetToken(StackParserSEM, 0)
+}
+
+func (s *WriteStatementContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitWriteStatement(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
 type BlockStatementContext struct {
 	StatementContext
 }
@@ -1427,58 +1479,6 @@ func (s *ExpressionStatementContext) Accept(visitor antlr.ParseTreeVisitor) inte
 	switch t := visitor.(type) {
 	case StackVisitor:
 		return t.VisitExpressionStatement(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
-type WriteStatementBBNContext struct {
-	StatementContext
-}
-
-func NewWriteStatementBBNContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *WriteStatementBBNContext {
-	var p = new(WriteStatementBBNContext)
-
-	InitEmptyStatementContext(&p.StatementContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*StatementContext))
-
-	return p
-}
-
-func (s *WriteStatementBBNContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *WriteStatementBBNContext) WRITE() antlr.TerminalNode {
-	return s.GetToken(StackParserWRITE, 0)
-}
-
-func (s *WriteStatementBBNContext) ExpressionList() IExpressionListContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExpressionListContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IExpressionListContext)
-}
-
-func (s *WriteStatementBBNContext) SEM() antlr.TerminalNode {
-	return s.GetToken(StackParserSEM, 0)
-}
-
-func (s *WriteStatementBBNContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case StackVisitor:
-		return t.VisitWriteStatementBBN(s)
 
 	default:
 		return t.VisitChildren(s)
@@ -1703,7 +1703,7 @@ func (p *StackParser) Statement() (localctx IStatementContext) {
 		}
 
 	case StackParserWRITE:
-		localctx = NewWriteStatementBBNContext(p, localctx)
+		localctx = NewWriteStatementContext(p, localctx)
 		p.EnterOuterAlt(localctx, 5)
 		{
 			p.SetState(57)
@@ -2324,50 +2324,6 @@ func (s *ParenExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interfac
 	}
 }
 
-type LiteralExpressionContext struct {
-	ExpressionContext
-}
-
-func NewLiteralExpressionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *LiteralExpressionContext {
-	var p = new(LiteralExpressionContext)
-
-	InitEmptyExpressionContext(&p.ExpressionContext)
-	p.parser = parser
-	p.CopyAll(ctx.(*ExpressionContext))
-
-	return p
-}
-
-func (s *LiteralExpressionContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *LiteralExpressionContext) Literal() ILiteralContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(ILiteralContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(ILiteralContext)
-}
-
-func (s *LiteralExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case StackVisitor:
-		return t.VisitLiteralExpression(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
-}
-
 type UnaryExpressionContext struct {
 	ExpressionContext
 	op antlr.Token
@@ -2419,6 +2375,50 @@ func (s *UnaryExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interfac
 	switch t := visitor.(type) {
 	case StackVisitor:
 		return t.VisitUnaryExpression(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+type LiteralExpressionContext struct {
+	ExpressionContext
+}
+
+func NewLiteralExpressionContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *LiteralExpressionContext {
+	var p = new(LiteralExpressionContext)
+
+	InitEmptyExpressionContext(&p.ExpressionContext)
+	p.parser = parser
+	p.CopyAll(ctx.(*ExpressionContext))
+
+	return p
+}
+
+func (s *LiteralExpressionContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *LiteralExpressionContext) Literal() ILiteralContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ILiteralContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ILiteralContext)
+}
+
+func (s *LiteralExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case StackVisitor:
+		return t.VisitLiteralExpression(s)
 
 	default:
 		return t.VisitChildren(s)
@@ -2489,12 +2489,12 @@ func (s *LogicalExpressionContext) Expression(i int) IExpressionContext {
 	return t.(IExpressionContext)
 }
 
-func (s *LogicalExpressionContext) AND() antlr.TerminalNode {
-	return s.GetToken(StackParserAND, 0)
-}
-
 func (s *LogicalExpressionContext) OR() antlr.TerminalNode {
 	return s.GetToken(StackParserOR, 0)
+}
+
+func (s *LogicalExpressionContext) AND() antlr.TerminalNode {
+	return s.GetToken(StackParserAND, 0)
 }
 
 func (s *LogicalExpressionContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
@@ -2573,59 +2573,37 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 
 	switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 7, p.GetParserRuleContext()) {
 	case 1:
-		localctx = NewLiteralExpressionContext(p, localctx)
+		localctx = NewParenExpressionContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 
 		{
 			p.SetState(87)
-			p.Literal()
+			p.Match(StackParserLPAR)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(88)
+			p.expression(0)
+		}
+		{
+			p.SetState(89)
+			p.Match(StackParserRPAR)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
 		}
 
 	case 2:
-		localctx = NewIdExpressionContext(p, localctx)
-		p.SetParserRuleContext(localctx)
-		_prevctx = localctx
-		{
-			p.SetState(88)
-			p.Match(StackParserID)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-
-	case 3:
-		localctx = NewAssignExpressionContext(p, localctx)
-		p.SetParserRuleContext(localctx)
-		_prevctx = localctx
-		{
-			p.SetState(89)
-			p.Match(StackParserID)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-		{
-			p.SetState(90)
-			p.Match(StackParserASSIGN)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-		{
-			p.SetState(91)
-			p.expression(6)
-		}
-
-	case 4:
 		localctx = NewUnaryExpressionContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(92)
+			p.SetState(91)
 
 			var _lt = p.GetTokenStream().LT(1)
 
@@ -2643,41 +2621,16 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 			}
 		}
 		{
-			p.SetState(93)
-			p.expression(3)
+			p.SetState(92)
+			p.expression(9)
 		}
 
-	case 5:
-		localctx = NewParenExpressionContext(p, localctx)
-		p.SetParserRuleContext(localctx)
-		_prevctx = localctx
-		{
-			p.SetState(94)
-			p.Match(StackParserLPAR)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-		{
-			p.SetState(95)
-			p.expression(0)
-		}
-		{
-			p.SetState(96)
-			p.Match(StackParserRPAR)
-			if p.HasError() {
-				// Recognition error - abort rule
-				goto errorExit
-			}
-		}
-
-	case 6:
+	case 3:
 		localctx = NewStringConcatExpressionContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(98)
+			p.SetState(93)
 			p.Match(StackParserSTRING_LITERAL)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2685,7 +2638,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 			}
 		}
 		{
-			p.SetState(99)
+			p.SetState(94)
 			p.Match(StackParserDOT)
 			if p.HasError() {
 				// Recognition error - abort rule
@@ -2693,8 +2646,55 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 			}
 		}
 		{
-			p.SetState(100)
+			p.SetState(95)
 			p.Match(StackParserSTRING_LITERAL)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+
+	case 4:
+		localctx = NewLiteralExpressionContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
+		{
+			p.SetState(96)
+			p.Literal()
+		}
+
+	case 5:
+		localctx = NewAssignExpressionContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
+		{
+			p.SetState(97)
+			p.Match(StackParserID)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(98)
+			p.Match(StackParserASSIGN)
+			if p.HasError() {
+				// Recognition error - abort rule
+				goto errorExit
+			}
+		}
+		{
+			p.SetState(99)
+			p.expression(2)
+		}
+
+	case 6:
+		localctx = NewIdExpressionContext(p, localctx)
+		p.SetParserRuleContext(localctx)
+		_prevctx = localctx
+		{
+			p.SetState(100)
+			p.Match(StackParserID)
 			if p.HasError() {
 				// Recognition error - abort rule
 				goto errorExit
@@ -2728,7 +2728,7 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 
 			switch p.GetInterpreter().AdaptivePredict(p.BaseParser, p.GetTokenStream(), 8, p.GetParserRuleContext()) {
 			case 1:
-				localctx = NewMulDivModExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
+				localctx = NewComparisonExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, StackParserRULE_expression)
 				p.SetState(103)
 
@@ -2738,70 +2738,6 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 				}
 				{
 					p.SetState(104)
-
-					var _lt = p.GetTokenStream().LT(1)
-
-					localctx.(*MulDivModExpressionContext).op = _lt
-
-					_la = p.GetTokenStream().LA(1)
-
-					if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&234881024) != 0) {
-						var _ri = p.GetErrorHandler().RecoverInline(p)
-
-						localctx.(*MulDivModExpressionContext).op = _ri
-					} else {
-						p.GetErrorHandler().ReportMatch(p)
-						p.Consume()
-					}
-				}
-				{
-					p.SetState(105)
-					p.expression(9)
-				}
-
-			case 2:
-				localctx = NewAddSubExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
-				p.PushNewRecursionContext(localctx, _startState, StackParserRULE_expression)
-				p.SetState(106)
-
-				if !(p.Precpred(p.GetParserRuleContext(), 7)) {
-					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 7)", ""))
-					goto errorExit
-				}
-				{
-					p.SetState(107)
-
-					var _lt = p.GetTokenStream().LT(1)
-
-					localctx.(*AddSubExpressionContext).op = _lt
-
-					_la = p.GetTokenStream().LA(1)
-
-					if !(_la == StackParserADD || _la == StackParserSUB) {
-						var _ri = p.GetErrorHandler().RecoverInline(p)
-
-						localctx.(*AddSubExpressionContext).op = _ri
-					} else {
-						p.GetErrorHandler().ReportMatch(p)
-						p.Consume()
-					}
-				}
-				{
-					p.SetState(108)
-					p.expression(8)
-				}
-
-			case 3:
-				localctx = NewComparisonExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
-				p.PushNewRecursionContext(localctx, _startState, StackParserRULE_expression)
-				p.SetState(109)
-
-				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
-					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
-					goto errorExit
-				}
-				{
-					p.SetState(110)
 
 					var _lt = p.GetTokenStream().LT(1)
 
@@ -2819,21 +2755,21 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
-					p.SetState(111)
-					p.expression(6)
+					p.SetState(105)
+					p.expression(9)
 				}
 
-			case 4:
+			case 2:
 				localctx = NewLogicalExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, StackParserRULE_expression)
-				p.SetState(112)
+				p.SetState(106)
 
-				if !(p.Precpred(p.GetParserRuleContext(), 4)) {
-					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
+				if !(p.Precpred(p.GetParserRuleContext(), 7)) {
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 7)", ""))
 					goto errorExit
 				}
 				{
-					p.SetState(113)
+					p.SetState(107)
 
 					var _lt = p.GetTokenStream().LT(1)
 
@@ -2851,8 +2787,72 @@ func (p *StackParser) expression(_p int) (localctx IExpressionContext) {
 					}
 				}
 				{
+					p.SetState(108)
+					p.expression(8)
+				}
+
+			case 3:
+				localctx = NewMulDivModExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
+				p.PushNewRecursionContext(localctx, _startState, StackParserRULE_expression)
+				p.SetState(109)
+
+				if !(p.Precpred(p.GetParserRuleContext(), 6)) {
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 6)", ""))
+					goto errorExit
+				}
+				{
+					p.SetState(110)
+
+					var _lt = p.GetTokenStream().LT(1)
+
+					localctx.(*MulDivModExpressionContext).op = _lt
+
+					_la = p.GetTokenStream().LA(1)
+
+					if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&234881024) != 0) {
+						var _ri = p.GetErrorHandler().RecoverInline(p)
+
+						localctx.(*MulDivModExpressionContext).op = _ri
+					} else {
+						p.GetErrorHandler().ReportMatch(p)
+						p.Consume()
+					}
+				}
+				{
+					p.SetState(111)
+					p.expression(7)
+				}
+
+			case 4:
+				localctx = NewAddSubExpressionContext(p, NewExpressionContext(p, _parentctx, _parentState))
+				p.PushNewRecursionContext(localctx, _startState, StackParserRULE_expression)
+				p.SetState(112)
+
+				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
+					p.SetError(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
+					goto errorExit
+				}
+				{
+					p.SetState(113)
+
+					var _lt = p.GetTokenStream().LT(1)
+
+					localctx.(*AddSubExpressionContext).op = _lt
+
+					_la = p.GetTokenStream().LA(1)
+
+					if !(_la == StackParserADD || _la == StackParserSUB) {
+						var _ri = p.GetErrorHandler().RecoverInline(p)
+
+						localctx.(*AddSubExpressionContext).op = _ri
+					} else {
+						p.GetErrorHandler().ReportMatch(p)
+						p.Consume()
+					}
+				}
+				{
 					p.SetState(114)
-					p.expression(5)
+					p.expression(6)
 				}
 
 			case antlr.ATNInvalidAltNumber:
@@ -2907,10 +2907,10 @@ func (p *StackParser) Expression_Sempred(localctx antlr.RuleContext, predIndex i
 		return p.Precpred(p.GetParserRuleContext(), 7)
 
 	case 2:
-		return p.Precpred(p.GetParserRuleContext(), 5)
+		return p.Precpred(p.GetParserRuleContext(), 6)
 
 	case 3:
-		return p.Precpred(p.GetParserRuleContext(), 4)
+		return p.Precpred(p.GetParserRuleContext(), 5)
 
 	default:
 		panic("No predicate with index: " + fmt.Sprint(predIndex))

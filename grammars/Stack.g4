@@ -63,20 +63,20 @@ statement: SEM # emptySemStatement
          | type variableList SEM # variableStatement
          | expression SEM # expressionStatement
          | READ variableList SEM # readStatement
-         | WRITE expressionList SEM # writeStatementBBN
+         | WRITE expressionList SEM # writeStatement
          | LBRACE statement* RBRACE # blockStatement
          | IF LPAR expression RPAR statement (ELSE statement)? # ifStatement
          | WHILE LPAR expression RPAR statement # whileStatement
          ;
 
-expression: literal # literalExpression
-          | expression op=(MUL | DIV | MOD) expression # mulDivModExpression
-          | expression op=(ADD | SUB) expression # addSubExpression
+expression: LPAR expression RPAR # parenExpression
+          | op=(NOT | SUB) expression # unaryExpression
           | expression op=(LT | GT | EQ | NE) expression # comparisonExpression
           | expression op=(AND | OR) expression # logicalExpression
-          | op=(NOT | SUB) expression # unaryExpression
-          | LPAR expression RPAR # parenExpression
+          | expression op=(MUL | DIV | MOD) expression # mulDivModExpression
+          | expression op=(ADD | SUB) expression # addSubExpression
           | STRING_LITERAL DOT STRING_LITERAL # stringConcatExpression
+          | literal # literalExpression
           | ID ASSIGN expression # assignExpression
           | ID # idExpression
           ;

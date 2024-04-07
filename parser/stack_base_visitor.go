@@ -60,7 +60,7 @@ func (v *BaseStackVisitor) VisitReadStatement(ctx *ReadStatementContext) interfa
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseStackVisitor) VisitWriteStatementBBN(ctx *WriteStatementBBNContext) interface{} {
+func (v *BaseStackVisitor) VisitWriteStatement(ctx *WriteStatementContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -100,11 +100,11 @@ func (v *BaseStackVisitor) VisitParenExpression(ctx *ParenExpressionContext) int
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseStackVisitor) VisitLiteralExpression(ctx *LiteralExpressionContext) interface{} {
+func (v *BaseStackVisitor) VisitUnaryExpression(ctx *UnaryExpressionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseStackVisitor) VisitUnaryExpression(ctx *UnaryExpressionContext) interface{} {
+func (v *BaseStackVisitor) VisitLiteralExpression(ctx *LiteralExpressionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 

@@ -47,8 +47,8 @@ type StackVisitor interface {
 	// Visit a parse tree produced by StackParser#readStatement.
 	VisitReadStatement(ctx *ReadStatementContext) interface{}
 
-	// Visit a parse tree produced by StackParser#writeStatementBBN.
-	VisitWriteStatementBBN(ctx *WriteStatementBBNContext) interface{}
+	// Visit a parse tree produced by StackParser#writeStatement.
+	VisitWriteStatement(ctx *WriteStatementContext) interface{}
 
 	// Visit a parse tree produced by StackParser#blockStatement.
 	VisitBlockStatement(ctx *BlockStatementContext) interface{}
@@ -77,11 +77,11 @@ type StackVisitor interface {
 	// Visit a parse tree produced by StackParser#parenExpression.
 	VisitParenExpression(ctx *ParenExpressionContext) interface{}
 
-	// Visit a parse tree produced by StackParser#literalExpression.
-	VisitLiteralExpression(ctx *LiteralExpressionContext) interface{}
-
 	// Visit a parse tree produced by StackParser#unaryExpression.
 	VisitUnaryExpression(ctx *UnaryExpressionContext) interface{}
+
+	// Visit a parse tree produced by StackParser#literalExpression.
+	VisitLiteralExpression(ctx *LiteralExpressionContext) interface{}
 
 	// Visit a parse tree produced by StackParser#logicalExpression.
 	VisitLogicalExpression(ctx *LogicalExpressionContext) interface{}

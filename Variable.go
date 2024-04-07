@@ -8,6 +8,7 @@ import (
 type Variable struct {
 	typeTokenIndex int
 	value          interface{}
+	depth          int
 }
 
 func (v *Variable) GetValueString() string {

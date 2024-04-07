@@ -2,10 +2,23 @@ package main
 
 import (
 	"bufio"
+	"github.com/antlr4-go/antlr/v4"
+	"go-compiler/parser"
 	"log"
 	"os"
 	"time"
 )
+
+func eval(input string) {
+	is := antlr.NewInputStream(input)
+	lexer := parser.NewStackLexer(is)
+	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+	p := parser.NewStackParser(stream)
+
+	v := &Visitor{}
+	v.Visit(p.Program())
+	v.PrintVariables()
+}
 
 func testFile(filePath string) {
 	file, err := os.Open(filePath)
@@ -15,11 +28,9 @@ func testFile(filePath string) {
 
 	scanner := bufio.NewScanner(file)
 	lines := ""
-
 	for scanner.Scan() {
 		lines += scanner.Text() + "\n"
 	}
-
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
@@ -30,5 +41,5 @@ func testFile(filePath string) {
 func main() {
 	time.Sleep(100 * time.Millisecond)
 
-	testFile("./inputs/lab_8.txt")
+	testFile("./inputs/input_3.txt")
 }
