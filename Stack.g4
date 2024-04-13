@@ -5,13 +5,12 @@ INT: 'int';
 FLOAT: 'float';
 BOOL: 'bool';
 STRING: 'string';
-TRUE: 'true';
-FALSE: 'false';
 WRITE: 'write';
 READ: 'read';
 IF: 'if';
 ELSE: 'else';
 WHILE: 'while';
+BOOL_LITERAL: 'true' | 'false';
 ID: [a-zA-Z][a-zA-Z0-9]*;
 INT_LITERAL: [0-9]+;
 FLOAT_LITERAL: [0-9]+ '.' [0-9]+;
@@ -36,6 +35,8 @@ LBRACE: '{';
 RBRACE: '}';
 COMMA: ',';
 DOT: '.';
+QUESTION: '?';
+COLON: ':';
 COMMENT: '//' ~[\r\n]* -> skip;
 WHITE_SPACES: [ \t\r\n]+ -> skip;
 
@@ -50,8 +51,7 @@ type: INT
 
 literal: INT_LITERAL # intLiteral
        | FLOAT_LITERAL # floatLiteral
-       | TRUE # trueLiteral
-       | FALSE # falseLiteral
+       | BOOL_LITERAL # boolLiteral
        | STRING_LITERAL # stringLiteral
        ;
 
@@ -70,14 +70,17 @@ statement: SEM # emptySemStatement
          ;
 
 expression: LPAR expression RPAR # parenExpression
-          | op=(NOT | SUB) expression # unaryExpression
-          | expression op=(LT | GT | EQ | NE) expression # comparisonExpression
-          | expression op=(AND | OR) expression # logicalExpression
+          | op=SUB expression # uminusExpression
+          | op=NOT expression # notExpression
           | expression op=(MUL | DIV | MOD) expression # mulDivModExpression
           | expression op=(ADD | SUB) expression # addSubExpression
-          | STRING_LITERAL DOT STRING_LITERAL # stringConcatExpression
-          | literal # literalExpression
+          | expression op=DOT expression # dotExpression
+          | expression op=(LT | GT) expression # comparisonExpression
+          | expression op=(EQ | NE) expression # equalityExpression
+          | expression op=AND expression # andExpression
+          | expression op=OR expression # orExpression
           | ID ASSIGN expression # assignExpression
+          | literal # literalExpression
           | ID # idExpression
           ;
 

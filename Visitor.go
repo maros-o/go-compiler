@@ -3,34 +3,75 @@ package main
 import (
 	"fmt"
 	"github.com/antlr4-go/antlr/v4"
+	"github.com/fatih/color"
 	"go-compiler/parser"
-	"strconv"
 )
+
+var tokenTypeToTypeStr = map[int]string{
+	parser.StackLexerINT:    "I",
+	parser.StackLexerFLOAT:  "F",
+	parser.StackLexerSTRING: "S",
+	parser.StackLexerBOOL:   "B",
+}
+
+var tokenTypeToDefaultValue = map[int]string{
+	parser.StackLexerINT:    "0",
+	parser.StackLexerFLOAT:  "0.0",
+	parser.StackLexerSTRING: "\"\"",
+	parser.StackLexerBOOL:   "true",
+}
+
+var tokenLiteralToType = map[int]int{
+	parser.StackLexerINT_LITERAL:    parser.StackLexerINT,
+	parser.StackLexerFLOAT_LITERAL:  parser.StackLexerFLOAT,
+	parser.StackLexerSTRING_LITERAL: parser.StackLexerSTRING,
+	parser.StackLexerBOOL_LITERAL:   parser.StackLexerBOOL,
+}
+
+var opToInstruction = map[int]string{
+	parser.StackLexerADD:  "add",
+	parser.StackLexerSUB:  "sub",
+	parser.StackLexerMUL:  "mul",
+	parser.StackLexerDIV:  "div",
+	parser.StackLexerMOD:  "mod",
+	parser.StackLexerAND:  "and",
+	parser.StackLexerOR:   "or",
+	parser.StackLexerGT:   "gt",
+	parser.StackLexerLT:   "lt",
+	parser.StackLexerEQ:   "eq",
+	parser.StackParserNE:  "ne",
+	parser.StackLexerNOT:  "not",
+	parser.StackParserDOT: "concat",
+}
 
 type Visitor struct {
 	*parser.BaseStackVisitor
-	variables map[string]Variable
-	depth     int
+	variables    map[string]Variable
+	instructions []string
+	depth        int
+	labelCount   int
 }
 
-func (v *Visitor) PrintVariables() {
-	fmt.Println("Variables:")
-	fmt.Printf("%-10s %-10s %-10s \n", "ID", "Type", "Value")
-	for name, variable := range v.variables {
-		fmt.Printf("%-10s %-10s %-10s \n", name, variable.GetTypeString(), variable.GetValueString())
+func (v *Visitor) NewVariable(typeTokenIndex int, id ...string) Variable {
+	if len(id) == 0 {
+		return Variable{typeTokenIndex: typeTokenIndex, depth: v.depth}
 	}
-}
-
-func (v *Visitor) NewVariable(typeTokenIndex int, value interface{}) Variable {
-	return Variable{typeTokenIndex: typeTokenIndex, value: value, depth: v.depth}
+	return Variable{typeTokenIndex: typeTokenIndex, depth: v.depth, id: id[0]}
 }
 
 func (v *Visitor) Visit(t antlr.ParseTree) interface{} {
 	return t.Accept(v)
 }
 
+func (v *Visitor) VisitEmptySemStatement(_ *parser.EmptySemStatementContext) interface{} {
+	return nil
+}
+
 func (v *Visitor) VisitProgram(c *parser.ProgramContext) interface{} {
 	v.variables = make(map[string]Variable)
+	v.instructions = make([]string, 0)
+	v.depth = 0
+
 	for _, ch := range c.GetChildren() {
 		v.Visit(ch.(antlr.ParseTree))
 	}
@@ -41,22 +82,14 @@ func (v *Visitor) VisitVariableStatement(c *parser.VariableStatementContext) int
 	typeTokenIndex := c.Type_().GetChild(0).(antlr.TerminalNode).GetSymbol().GetTokenType()
 	ids := v.VisitVariableList(c.VariableList().(*parser.VariableListContext)).([]string)
 
-	for _, name := range ids {
-		if _, exists := v.variables[name]; exists {
-			panic(fmt.Sprintf("Variable '%s' already exists, line: %d", name, c.GetStart().GetLine()))
+	for _, id := range ids {
+		if _, exists := v.variables[id]; exists {
+			color.Red("VisitVariableStatement::Variable %s already exists, line: %d \n", id, c.GetStart().GetLine())
+			break
 		}
-
-		if typeTokenIndex == parser.StackLexerINT {
-			v.variables[name] = v.NewVariable(typeTokenIndex, 0)
-		} else if typeTokenIndex == parser.StackLexerFLOAT {
-			v.variables[name] = v.NewVariable(typeTokenIndex, 0.0)
-		} else if typeTokenIndex == parser.StackLexerSTRING {
-			v.variables[name] = v.NewVariable(typeTokenIndex, "")
-		} else if typeTokenIndex == parser.StackLexerBOOL {
-			v.variables[name] = v.NewVariable(typeTokenIndex, false)
-		} else {
-			panic(fmt.Sprintf("Unknown type: %d", typeTokenIndex))
-		}
+		v.variables[id] = v.NewVariable(typeTokenIndex, id)
+		v.instructions = append(v.instructions, fmt.Sprintf("push %s %s", tokenTypeToTypeStr[typeTokenIndex], tokenTypeToDefaultValue[typeTokenIndex]))
+		v.instructions = append(v.instructions, fmt.Sprintf("save %s", id))
 	}
 	return nil
 }
@@ -66,272 +99,34 @@ func (v *Visitor) VisitExpressionStatement(c *parser.ExpressionStatementContext)
 	return nil
 }
 
-func (v *Visitor) VisitIdExpression(c *parser.IdExpressionContext) interface{} {
-	id := c.ID().GetText()
-	if _, exists := v.variables[id]; !exists {
-		panic(fmt.Sprintf("Variable '%s' does not exist, line: %d", id, c.ID().GetSymbol().GetLine()))
-	}
-	return v.variables[id]
-}
+func (v *Visitor) VisitReadStatement(c *parser.ReadStatementContext) interface{} {
+	ids := v.VisitVariableList(c.VariableList().(*parser.VariableListContext)).([]string)
 
-func (v *Visitor) VisitAddSubExpression(c *parser.AddSubExpressionContext) interface{} {
-	left := v.Visit(c.Expression(0)).(Variable)
-	right := v.Visit(c.Expression(1)).(Variable)
-
-	if left.typeTokenIndex != right.typeTokenIndex {
-		panic(fmt.Sprintf("AddSub different types of variables, line: %d", c.GetStart().GetLine()))
-	}
-
-	if left.typeTokenIndex == parser.StackLexerINT {
-		if c.GetOp().GetTokenType() == parser.StackLexerADD {
-			return v.NewVariable(parser.StackLexerINT, left.value.(int)+right.value.(int))
-		} else if c.GetOp().GetTokenType() == parser.StackLexerSUB {
-			return v.NewVariable(parser.StackLexerINT, left.value.(int)-right.value.(int))
+	for _, id := range ids {
+		variable, exists := v.variables[id]
+		if !exists {
+			color.Red("VisitReadStatement::Variable %s does not exist, line: %d\n", id, c.GetStart().GetLine())
+			return nil
 		}
-	} else if left.typeTokenIndex == parser.StackLexerFLOAT {
-		if c.GetOp().GetTokenType() == parser.StackLexerADD {
-			return v.NewVariable(parser.StackLexerFLOAT, left.value.(float64)+right.value.(float64))
-		} else if c.GetOp().GetTokenType() == parser.StackLexerSUB {
-			return v.NewVariable(parser.StackLexerFLOAT, left.value.(float64)-right.value.(float64))
+		v.instructions = append(v.instructions, fmt.Sprintf("read %s", tokenTypeToTypeStr[variable.typeTokenIndex]))
+		if variable.id != "" {
+			v.instructions = append(v.instructions, fmt.Sprintf("save %s", id))
 		}
 	}
-	panic(fmt.Sprintf("Unknown type: %d", left.typeTokenIndex))
-}
-
-func (v *Visitor) VisitMulDivModExpression(c *parser.MulDivModExpressionContext) interface{} {
-	left := v.Visit(c.Expression(0)).(Variable)
-	right := v.Visit(c.Expression(1)).(Variable)
-
-	if left.typeTokenIndex != right.typeTokenIndex {
-		panic(fmt.Sprintf("MulDivMod different types of variables, line: %d", c.GetStart().GetLine()))
-	}
-
-	if left.typeTokenIndex == parser.StackLexerINT {
-		if c.GetOp().GetTokenType() == parser.StackLexerMUL {
-			return v.NewVariable(parser.StackLexerINT, left.value.(int)*right.value.(int))
-		} else if c.GetOp().GetTokenType() == parser.StackLexerDIV {
-			return v.NewVariable(parser.StackLexerINT, left.value.(int)/right.value.(int))
-		} else if c.GetOp().GetTokenType() == parser.StackLexerMOD {
-			return v.NewVariable(parser.StackLexerINT, left.value.(int)%right.value.(int))
-		}
-	} else if left.typeTokenIndex == parser.StackLexerFLOAT {
-		if c.GetOp().GetTokenType() == parser.StackLexerMUL {
-			return v.NewVariable(parser.StackLexerFLOAT, left.value.(float64)*right.value.(float64))
-		} else if c.GetOp().GetTokenType() == parser.StackLexerDIV {
-			return v.NewVariable(parser.StackLexerFLOAT, left.value.(float64)/right.value.(float64))
-		}
-	}
-	panic(fmt.Sprintf("Unknown type: %d", left.typeTokenIndex))
-}
-
-func (v *Visitor) VisitLiteralExpression(c *parser.LiteralExpressionContext) interface{} {
-	literal := c.Literal().GetChild(0).(antlr.TerminalNode)
-	value := literal.GetText()
-	tokenType := literal.GetSymbol().GetTokenType()
-
-	if tokenType == parser.StackLexerINT_LITERAL {
-		intValue, _ := strconv.Atoi(value)
-		return v.NewVariable(parser.StackLexerINT, intValue)
-	} else if tokenType == parser.StackLexerFLOAT_LITERAL {
-		floatValue, _ := strconv.ParseFloat(value, 64)
-		return v.NewVariable(parser.StackLexerFLOAT, floatValue)
-	} else if tokenType == parser.StackLexerSTRING_LITERAL {
-		return v.VisitStringLiteral(c.Literal().(*parser.StringLiteralContext))
-	} else if tokenType == parser.StackLexerTRUE || tokenType == parser.StackLexerFALSE {
-		return v.NewVariable(parser.StackLexerBOOL, tokenType == parser.StackLexerTRUE)
-	}
-	panic(fmt.Sprintf("Unknown token type: %d", tokenType))
-}
-
-func (v *Visitor) VisitAssignExpression(c *parser.AssignExpressionContext) interface{} {
-	id := c.ID().GetText()
-	variable, exists := v.variables[id]
-	if !exists {
-		panic(fmt.Sprintf("Variable '%s' does not exist, line: %d", id, c.ID().GetSymbol().GetLine()))
-	}
-	right := v.Visit(c.Expression()).(Variable)
-	if v.variables[id].typeTokenIndex != right.typeTokenIndex {
-		panic(fmt.Sprintf("Assigning different type, line: %d", c.GetStart().GetLine()))
-	}
-	v.variables[id] = Variable{typeTokenIndex: variable.typeTokenIndex, value: right.value, depth: variable.depth}
-	return v.variables[id]
+	return nil
 }
 
 func (v *Visitor) VisitWriteStatement(c *parser.WriteStatementContext) interface{} {
+	n := 0
 	for _, ch := range c.ExpressionList().GetChildren() {
 		t, ok := ch.(antlr.TerminalNode)
 		if ok && t.GetSymbol().GetTokenType() == parser.StackLexerCOMMA {
 			continue
 		}
-		res := v.Visit(ch.(antlr.ParseTree)).(Variable)
-		fmt.Print(res.GetValueString())
+		v.Visit(ch.(antlr.ParseTree))
+		n++
 	}
-	fmt.Println("")
-	return nil
-}
-
-func (v *Visitor) VisitEmptySemStatement(_ *parser.EmptySemStatementContext) interface{} {
-	return nil
-}
-
-func (v *Visitor) VisitUnaryExpression(c *parser.UnaryExpressionContext) interface{} {
-	right := v.Visit(c.Expression()).(Variable)
-	op := c.GetOp().GetTokenType()
-
-	if op == parser.StackLexerNOT && right.typeTokenIndex == parser.StackLexerBOOL {
-		return v.NewVariable(parser.StackLexerBOOL, !right.value.(bool))
-	}
-	if right.typeTokenIndex == parser.StackLexerINT {
-		return v.NewVariable(parser.StackLexerINT, -right.value.(int))
-	} else if right.typeTokenIndex == parser.StackLexerFLOAT {
-		return v.NewVariable(parser.StackLexerFLOAT, -right.value.(float64))
-	}
-	panic(fmt.Sprintf("Unknown type: %d", right.typeTokenIndex))
-}
-
-func (v *Visitor) VisitStringLiteral(c *parser.StringLiteralContext) interface{} {
-	text := c.STRING_LITERAL().GetText()
-	return v.NewVariable(parser.StackLexerSTRING, text[1:len(text)-1])
-}
-
-func (v *Visitor) VisitStringConcatExpression(c *parser.StringConcatExpressionContext) interface{} {
-	left := c.STRING_LITERAL(0).GetSymbol().GetText()
-	right := c.STRING_LITERAL(1).GetSymbol().GetText()
-	return v.NewVariable(parser.StackLexerSTRING, left[1:len(left)-1]+right[1:len(right)-1])
-}
-
-func (v *Visitor) VisitReadStatement(c *parser.ReadStatementContext) interface{} {
-	ids := v.VisitVariableList(c.VariableList().(*parser.VariableListContext)).([]string)
-	var input string
-
-	for _, name := range ids {
-		fmt.Printf("Enter value for %s\n", name)
-		_, err := fmt.Scan(&input)
-		if err != nil {
-			panic(fmt.Sprintf("Error reading input: %s", err))
-		}
-		tokenType := v.variables[name].typeTokenIndex
-		if tokenType == parser.StackLexerINT {
-			intValue, err := strconv.Atoi(input)
-			if err != nil {
-				panic(fmt.Sprintf("Wrong user input, expected int, got %s", input))
-			}
-			v.variables[name] = v.NewVariable(tokenType, intValue)
-		} else if tokenType == parser.StackLexerFLOAT {
-			floatValue, err := strconv.ParseFloat(input, 64)
-			if err != nil {
-				panic(fmt.Sprintf("Wrong user input, expected float, got %s", input))
-			}
-			v.variables[name] = v.NewVariable(tokenType, floatValue)
-		} else if tokenType == parser.StackLexerSTRING {
-			v.variables[name] = v.NewVariable(tokenType, input)
-		} else if tokenType == parser.StackLexerBOOL {
-			boolValue, err := strconv.ParseBool(input)
-			if err != nil {
-				panic(fmt.Sprintf("Wrong user input, expected bool, got %s", input))
-			}
-			v.variables[name] = v.NewVariable(tokenType, boolValue)
-		} else {
-			panic(fmt.Sprintf("Unknown type: %d", tokenType))
-		}
-	}
-	return nil
-}
-
-func (v *Visitor) VisitVariableList(c *parser.VariableListContext) interface{} {
-	res := make([]string, 0)
-
-	for _, ch := range c.GetChildren() {
-		id := ch.(antlr.TerminalNode)
-		if id.GetSymbol().GetTokenType() != parser.StackLexerID {
-			continue
-		}
-		name := id.GetText()
-		res = append(res, name)
-	}
-	return res
-}
-
-func (v *Visitor) VisitComparisonExpression(c *parser.ComparisonExpressionContext) interface{} {
-	left := v.Visit(c.Expression(0)).(Variable)
-	right := v.Visit(c.Expression(1)).(Variable)
-
-	if left.typeTokenIndex != right.typeTokenIndex {
-		panic(fmt.Sprintf("Comparison different types of variables, line: %d", c.GetStart().GetLine()))
-	}
-
-	op := c.GetOp().GetTokenType()
-	if left.typeTokenIndex == parser.StackLexerINT {
-		if op == parser.StackLexerEQ {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(int) == right.value.(int))
-		} else if op == parser.StackLexerNE {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(int) != right.value.(int))
-		} else if op == parser.StackLexerLT {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(int) < right.value.(int))
-		} else if op == parser.StackParserGT {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(int) > right.value.(int))
-		}
-	} else if left.typeTokenIndex == parser.StackLexerFLOAT {
-		if op == parser.StackLexerEQ {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(float64) == right.value.(float64))
-		} else if op == parser.StackLexerNE {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(float64) != right.value.(float64))
-		} else if op == parser.StackLexerLT {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(float64) < right.value.(float64))
-		} else if op == parser.StackParserGT {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(float64) > right.value.(float64))
-		}
-	} else if left.typeTokenIndex == parser.StackLexerSTRING {
-		if op == parser.StackLexerEQ {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(string) == right.value.(string))
-		} else if op == parser.StackLexerNE {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(string) != right.value.(string))
-		} else if op == parser.StackLexerLT {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(string) < right.value.(string))
-		} else if op == parser.StackParserGT {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(string) > right.value.(string))
-		}
-	} else if left.typeTokenIndex == parser.StackLexerBOOL {
-		if op == parser.StackLexerEQ {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(bool) == right.value.(bool))
-		} else if op == parser.StackLexerNE {
-			return v.NewVariable(parser.StackLexerBOOL, left.value.(bool) != right.value.(bool))
-		}
-	}
-	panic(fmt.Sprintf("Unknown type: %d", left.typeTokenIndex))
-}
-
-func (v *Visitor) VisitLogicalExpression(c *parser.LogicalExpressionContext) interface{} {
-	left := v.Visit(c.Expression(0)).(Variable)
-	right := v.Visit(c.Expression(1)).(Variable)
-
-	if left.typeTokenIndex != parser.StackLexerBOOL || right.typeTokenIndex != parser.StackLexerBOOL {
-		panic(fmt.Sprintf("Logical expression with non-boolean types, line: %d", c.GetStart().GetLine()))
-	}
-
-	op := c.GetOp().GetTokenType()
-	if op == parser.StackLexerAND {
-		return v.NewVariable(parser.StackLexerBOOL, left.value.(bool) && right.value.(bool))
-	} else if op == parser.StackLexerOR {
-		return v.NewVariable(parser.StackLexerBOOL, left.value.(bool) || right.value.(bool))
-	}
-	panic(fmt.Sprintf("Unknown operator: %d", op))
-}
-
-func (v *Visitor) VisitParenExpression(c *parser.ParenExpressionContext) interface{} {
-	return v.Visit(c.Expression())
-}
-
-func (v *Visitor) VisitIfStatement(c *parser.IfStatementContext) interface{} {
-	condition := v.Visit(c.Expression()).(Variable)
-	if condition.typeTokenIndex != parser.StackLexerBOOL {
-		panic(fmt.Sprintf("If condition is not boolean, line: %d", c.GetStart().GetLine()))
-	}
-	if condition.value.(bool) {
-		v.Visit(c.Statement(0))
-	} else if c.Statement(1) != nil {
-		v.Visit(c.Statement(1))
-	}
+	v.instructions = append(v.instructions, fmt.Sprintf("print %d", n))
 	return nil
 }
 
@@ -349,16 +144,295 @@ func (v *Visitor) VisitBlockStatement(c *parser.BlockStatementContext) interface
 	return nil
 }
 
-func (v *Visitor) VisitWhileStatement(c *parser.WhileStatementContext) interface{} {
-	for {
-		condition := v.Visit(c.Expression()).(Variable)
-		if condition.typeTokenIndex != parser.StackLexerBOOL {
-			panic(fmt.Sprintf("While condition is not boolean, line: %d", c.GetStart().GetLine()))
-		}
-		if !condition.value.(bool) {
-			break
-		}
-		v.Visit(c.Statement())
+func (v *Visitor) VisitIfStatement(c *parser.IfStatementContext) interface{} {
+	condition := v.Visit(c.Expression()).(Variable)
+	if condition.typeTokenIndex != parser.StackLexerBOOL {
+		color.Red("VisitIfStatement::If condition is not boolean, line: %d\n", c.GetStart().GetLine())
+		return nil
 	}
+	v.instructions = append(v.instructions, fmt.Sprintf("fjmp %d", v.labelCount))
+	v.Visit(c.Statement(0))
+	v.instructions = append(v.instructions, fmt.Sprintf("jmp %d", v.labelCount+1))
+	v.instructions = append(v.instructions, fmt.Sprintf("label %d", v.labelCount))
+	v.labelCount++
+	if c.Statement(1) != nil {
+		v.Visit(c.Statement(1))
+	}
+	v.instructions = append(v.instructions, fmt.Sprintf("label %d", v.labelCount))
+	v.labelCount++
 	return nil
+}
+
+func (v *Visitor) VisitWhileStatement(c *parser.WhileStatementContext) interface{} {
+	v.instructions = append(v.instructions, fmt.Sprintf("label %d", v.labelCount))
+	v.labelCount++
+	condition := v.Visit(c.Expression()).(Variable)
+	if condition.typeTokenIndex != parser.StackLexerBOOL {
+		color.Red("VisitWhileStatement::While condition is not boolean, line: %d\n", c.GetStart().GetLine())
+		return nil
+	}
+	v.instructions = append(v.instructions, fmt.Sprintf("fjmp %d", v.labelCount))
+	v.Visit(c.Statement())
+	v.instructions = append(v.instructions, fmt.Sprintf("jmp %d", v.labelCount-1))
+	v.instructions = append(v.instructions, fmt.Sprintf("label %d", v.labelCount))
+	v.labelCount++
+	return nil
+}
+
+func (v *Visitor) VisitVariableList(c *parser.VariableListContext) interface{} {
+	res := make([]string, 0)
+	for _, ch := range c.GetChildren() {
+		id := ch.(antlr.TerminalNode)
+		if id.GetSymbol().GetTokenType() != parser.StackLexerID {
+			continue
+		}
+		name := id.GetText()
+		res = append(res, name)
+	}
+	return res
+}
+
+func (v *Visitor) VisitParenExpression(c *parser.ParenExpressionContext) interface{} {
+	return v.Visit(c.Expression())
+}
+
+func (v *Visitor) VisitUminusExpression(c *parser.UminusExpressionContext) interface{} {
+	right, ok := v.Visit(c.Expression()).(Variable)
+	if !ok {
+		return nil
+	}
+	if right.typeTokenIndex != parser.StackLexerINT && right.typeTokenIndex != parser.StackLexerFLOAT {
+		color.Red("VisitUminusExpression::Uminus non-numeric value, line: %d\n", c.GetStart().GetLine())
+		return nil
+	}
+	v.instructions = append(v.instructions, "uminus")
+	return right
+}
+
+func (v *Visitor) VisitNotExpression(c *parser.NotExpressionContext) interface{} {
+	right, ok := v.Visit(c.Expression()).(Variable)
+	if !ok {
+		return nil
+	}
+	if right.typeTokenIndex != parser.StackLexerBOOL {
+		color.Red("VisitNotExpression::Negating non-boolean value, line: %d\n", c.GetStart().GetLine())
+		return nil
+	}
+	v.instructions = append(v.instructions, fmt.Sprintf("%s", opToInstruction[c.GetOp().GetTokenType()]))
+	return right
+}
+
+func (v *Visitor) VisitMulDivModExpression(c *parser.MulDivModExpressionContext) interface{} {
+	left, ok := v.Visit(c.Expression(0)).(Variable)
+	if !ok {
+		return nil
+	}
+	right, ok := v.Visit(c.Expression(1)).(Variable)
+	if !ok {
+		return nil
+	}
+	op := c.GetOp().GetTokenType()
+
+	if op == parser.StackLexerMOD && (left.typeTokenIndex != parser.StackLexerINT || right.typeTokenIndex != parser.StackLexerINT) {
+		color.Red("VisitMulDivModExpression::Modulo non-integer value, line: %d\n", c.GetStart().GetLine())
+		return nil
+	}
+	if left.typeTokenIndex == parser.StackLexerINT && right.typeTokenIndex == parser.StackLexerFLOAT {
+		pop := v.instructions[len(v.instructions)-1]
+		v.instructions = v.instructions[:len(v.instructions)-1]
+		v.instructions = append(v.instructions, "itof")
+		v.instructions = append(v.instructions, pop)
+		left.typeTokenIndex = parser.StackLexerFLOAT
+	}
+	if left.typeTokenIndex == parser.StackLexerFLOAT && right.typeTokenIndex == parser.StackLexerINT {
+		v.instructions = append(v.instructions, "itof")
+	}
+	v.instructions = append(v.instructions, fmt.Sprintf("%s", opToInstruction[c.GetOp().GetTokenType()]))
+	return left
+}
+
+func (v *Visitor) VisitAddSubExpression(c *parser.AddSubExpressionContext) interface{} {
+	left, ok := v.Visit(c.Expression(0)).(Variable)
+	if !ok {
+		return nil
+	}
+	right, ok := v.Visit(c.Expression(1)).(Variable)
+	if !ok {
+		return nil
+	}
+
+	if left.typeTokenIndex == parser.StackLexerINT && right.typeTokenIndex == parser.StackLexerFLOAT {
+		pop := v.instructions[len(v.instructions)-1]
+		v.instructions = v.instructions[:len(v.instructions)-1]
+		v.instructions = append(v.instructions, "itof")
+		v.instructions = append(v.instructions, pop)
+		left.typeTokenIndex = parser.StackLexerFLOAT
+	}
+	if left.typeTokenIndex == parser.StackLexerFLOAT && right.typeTokenIndex == parser.StackLexerINT {
+		v.instructions = append(v.instructions, "itof")
+		right.typeTokenIndex = parser.StackLexerFLOAT
+	}
+	if left.typeTokenIndex != right.typeTokenIndex || left.typeTokenIndex == parser.StackLexerSTRING || left.typeTokenIndex == parser.StackLexerBOOL {
+		color.Red("VisitAddSubExpression::Tried to %s %s %s, line: %d\n", tokenTypeToTypeStr[left.typeTokenIndex], c.GetOp().GetText(), tokenTypeToTypeStr[right.typeTokenIndex], c.GetStart().GetLine())
+		return nil
+	}
+	v.instructions = append(v.instructions, fmt.Sprintf("%s", opToInstruction[c.GetOp().GetTokenType()]))
+	return left
+}
+
+func (v *Visitor) VisitDotExpression(c *parser.DotExpressionContext) interface{} {
+	left, ok := v.Visit(c.Expression(0)).(Variable)
+	if !ok {
+		return nil
+	}
+	right, ok := v.Visit(c.Expression(1)).(Variable)
+	if !ok {
+		return nil
+	}
+
+	if left.typeTokenIndex != right.typeTokenIndex || left.typeTokenIndex != parser.StackLexerSTRING {
+		color.Red("VisitDotExpression::Tried to %s %s %s, line: %d\n", tokenTypeToTypeStr[left.typeTokenIndex], c.GetOp().GetText(), tokenTypeToTypeStr[right.typeTokenIndex], c.GetStart().GetLine())
+		return nil
+	}
+	v.instructions = append(v.instructions, fmt.Sprintf("%s", opToInstruction[c.GetOp().GetTokenType()]))
+	return left
+}
+
+func (v *Visitor) VisitComparisonExpression(c *parser.ComparisonExpressionContext) interface{} {
+	left, ok := v.Visit(c.Expression(0)).(Variable)
+	if !ok {
+		return nil
+	}
+	right, ok := v.Visit(c.Expression(1)).(Variable)
+	if !ok {
+		return nil
+	}
+
+	if left.typeTokenIndex == parser.StackLexerINT && right.typeTokenIndex == parser.StackLexerFLOAT {
+		pop := v.instructions[len(v.instructions)-1]
+		v.instructions = v.instructions[:len(v.instructions)-1]
+		v.instructions = append(v.instructions, "itof")
+		v.instructions = append(v.instructions, pop)
+		left.typeTokenIndex = parser.StackLexerFLOAT
+	}
+	if left.typeTokenIndex == parser.StackLexerFLOAT && right.typeTokenIndex == parser.StackLexerINT {
+		v.instructions = append(v.instructions, "itof")
+		right.typeTokenIndex = parser.StackLexerFLOAT
+	}
+	if left.typeTokenIndex != right.typeTokenIndex {
+		color.Red("VisitComparisonExpression::Tried to %s %s %s, line: %d\n", tokenTypeToTypeStr[left.typeTokenIndex], c.GetOp().GetText(), tokenTypeToTypeStr[right.typeTokenIndex], c.GetStart().GetLine())
+		return nil
+	}
+	v.instructions = append(v.instructions, fmt.Sprintf("%s", opToInstruction[c.GetOp().GetTokenType()]))
+	left.typeTokenIndex = parser.StackLexerBOOL
+	return left
+}
+
+func (v *Visitor) VisitEqualityExpression(c *parser.EqualityExpressionContext) interface{} {
+	left, ok := v.Visit(c.Expression(0)).(Variable)
+	if !ok {
+		return nil
+	}
+	right, ok := v.Visit(c.Expression(1)).(Variable)
+	if !ok {
+		return nil
+	}
+
+	if left.typeTokenIndex != right.typeTokenIndex {
+		color.Red("VisitEqualityExpression::Tried to %s %s %s, line: %d\n", tokenTypeToTypeStr[left.typeTokenIndex], c.GetOp().GetText(), tokenTypeToTypeStr[right.typeTokenIndex], c.GetStart().GetLine())
+		return nil
+	}
+	op := c.GetOp().GetTokenType()
+	if op == parser.StackLexerNE {
+		v.instructions = append(v.instructions, "eq")
+		v.instructions = append(v.instructions, "not")
+	} else {
+		v.instructions = append(v.instructions, fmt.Sprintf("%s", opToInstruction[op]))
+	}
+	left.typeTokenIndex = parser.StackLexerBOOL
+	return left
+}
+
+func (v *Visitor) VisitAndExpression(c *parser.AndExpressionContext) interface{} {
+	left, ok := v.Visit(c.Expression(0)).(Variable)
+	if !ok {
+		return nil
+	}
+	right, ok := v.Visit(c.Expression(1)).(Variable)
+	if !ok {
+		return nil
+	}
+
+	if left.typeTokenIndex != right.typeTokenIndex || left.typeTokenIndex != parser.StackLexerBOOL {
+		color.Red("VisitAndExpression::Tried to %s %s %s, line: %d\n", tokenTypeToTypeStr[left.typeTokenIndex], c.GetOp().GetText(), tokenTypeToTypeStr[right.typeTokenIndex], c.GetStart().GetLine())
+		return nil
+	}
+	v.instructions = append(v.instructions, fmt.Sprintf("%s", opToInstruction[c.GetOp().GetTokenType()]))
+	return left
+}
+
+func (v *Visitor) VisitOrExpression(c *parser.OrExpressionContext) interface{} {
+	left, ok := v.Visit(c.Expression(0)).(Variable)
+	if !ok {
+		return nil
+	}
+	right, ok := v.Visit(c.Expression(1)).(Variable)
+	if !ok {
+		return nil
+	}
+
+	if left.typeTokenIndex != right.typeTokenIndex || left.typeTokenIndex != parser.StackLexerBOOL {
+		color.Red("VisitOrExpression::Tried to %s %s %s, line: %d\n", tokenTypeToTypeStr[left.typeTokenIndex], c.GetOp().GetText(), tokenTypeToTypeStr[right.typeTokenIndex], c.GetStart().GetLine())
+		return nil
+	}
+	v.instructions = append(v.instructions, fmt.Sprintf("%s", opToInstruction[c.GetOp().GetTokenType()]))
+	return left
+}
+
+func (v *Visitor) VisitAssignExpression(c *parser.AssignExpressionContext) interface{} {
+	id := c.ID().GetText()
+	variable, exists := v.variables[id]
+	if !exists {
+		color.Red("VisitAssignExpression::Variable %s does not exist, line: %d\n", id, c.ID().GetSymbol().GetLine())
+		return nil
+	}
+	right, ok := v.Visit(c.Expression()).(Variable)
+	if !ok {
+		return nil
+	}
+
+	_, rightIsAssign := c.Expression().(*parser.AssignExpressionContext)
+	if right.id != "" && rightIsAssign {
+		v.instructions = v.instructions[:len(v.instructions)-2]
+		v.instructions = append(v.instructions, fmt.Sprintf("load %s", right.id))
+	}
+	if variable.typeTokenIndex == parser.StackLexerFLOAT && right.typeTokenIndex == parser.StackLexerINT {
+		v.instructions = append(v.instructions, "itof")
+		right.typeTokenIndex = parser.StackLexerFLOAT
+	}
+	if variable.typeTokenIndex != right.typeTokenIndex {
+		color.Red("VisitAssignExpression::Assigning type %s to variable %s of type %s, line: %d\n", tokenTypeToTypeStr[right.typeTokenIndex], id, tokenTypeToTypeStr[variable.typeTokenIndex], c.GetStart().GetLine())
+		return nil
+	}
+	v.instructions = append(v.instructions, fmt.Sprintf("save %s", id))
+	v.instructions = append(v.instructions, fmt.Sprintf("load %s", id))
+	v.instructions = append(v.instructions, fmt.Sprintf("pop"))
+	return variable
+}
+
+func (v *Visitor) VisitLiteralExpression(c *parser.LiteralExpressionContext) interface{} {
+	literal := c.Literal().GetChild(0).(antlr.TerminalNode)
+	value := literal.GetText()
+	tokenType := tokenLiteralToType[literal.GetSymbol().GetTokenType()]
+	v.instructions = append(v.instructions, fmt.Sprintf("push %s %s", tokenTypeToTypeStr[tokenType], value))
+	return v.NewVariable(tokenType)
+}
+
+func (v *Visitor) VisitIdExpression(c *parser.IdExpressionContext) interface{} {
+	id := c.ID().GetText()
+	if _, exists := v.variables[id]; !exists {
+		color.Red("VisitIdExpression::Variable %s does not exist, line: %d \n", id, c.ID().GetSymbol().GetLine())
+	}
+	v.instructions = append(v.instructions, fmt.Sprintf("load %s", id))
+	return v.variables[id]
 }

@@ -1,4 +1,4 @@
-// Code generated from ./grammars/Stack.g4 by ANTLR 4.13.1. DO NOT EDIT.
+// Code generated from ./Stack.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser // Stack
 
@@ -20,11 +20,8 @@ type StackVisitor interface {
 	// Visit a parse tree produced by StackParser#floatLiteral.
 	VisitFloatLiteral(ctx *FloatLiteralContext) interface{}
 
-	// Visit a parse tree produced by StackParser#trueLiteral.
-	VisitTrueLiteral(ctx *TrueLiteralContext) interface{}
-
-	// Visit a parse tree produced by StackParser#falseLiteral.
-	VisitFalseLiteral(ctx *FalseLiteralContext) interface{}
+	// Visit a parse tree produced by StackParser#boolLiteral.
+	VisitBoolLiteral(ctx *BoolLiteralContext) interface{}
 
 	// Visit a parse tree produced by StackParser#stringLiteral.
 	VisitStringLiteral(ctx *StringLiteralContext) interface{}
@@ -62,14 +59,17 @@ type StackVisitor interface {
 	// Visit a parse tree produced by StackParser#mulDivModExpression.
 	VisitMulDivModExpression(ctx *MulDivModExpressionContext) interface{}
 
-	// Visit a parse tree produced by StackParser#idExpression.
-	VisitIdExpression(ctx *IdExpressionContext) interface{}
+	// Visit a parse tree produced by StackParser#dotExpression.
+	VisitDotExpression(ctx *DotExpressionContext) interface{}
 
-	// Visit a parse tree produced by StackParser#addSubExpression.
-	VisitAddSubExpression(ctx *AddSubExpressionContext) interface{}
+	// Visit a parse tree produced by StackParser#uminusExpression.
+	VisitUminusExpression(ctx *UminusExpressionContext) interface{}
 
 	// Visit a parse tree produced by StackParser#assignExpression.
 	VisitAssignExpression(ctx *AssignExpressionContext) interface{}
+
+	// Visit a parse tree produced by StackParser#notExpression.
+	VisitNotExpression(ctx *NotExpressionContext) interface{}
 
 	// Visit a parse tree produced by StackParser#comparisonExpression.
 	VisitComparisonExpression(ctx *ComparisonExpressionContext) interface{}
@@ -77,15 +77,21 @@ type StackVisitor interface {
 	// Visit a parse tree produced by StackParser#parenExpression.
 	VisitParenExpression(ctx *ParenExpressionContext) interface{}
 
-	// Visit a parse tree produced by StackParser#unaryExpression.
-	VisitUnaryExpression(ctx *UnaryExpressionContext) interface{}
+	// Visit a parse tree produced by StackParser#orExpression.
+	VisitOrExpression(ctx *OrExpressionContext) interface{}
+
+	// Visit a parse tree produced by StackParser#andExpression.
+	VisitAndExpression(ctx *AndExpressionContext) interface{}
+
+	// Visit a parse tree produced by StackParser#idExpression.
+	VisitIdExpression(ctx *IdExpressionContext) interface{}
+
+	// Visit a parse tree produced by StackParser#addSubExpression.
+	VisitAddSubExpression(ctx *AddSubExpressionContext) interface{}
+
+	// Visit a parse tree produced by StackParser#equalityExpression.
+	VisitEqualityExpression(ctx *EqualityExpressionContext) interface{}
 
 	// Visit a parse tree produced by StackParser#literalExpression.
 	VisitLiteralExpression(ctx *LiteralExpressionContext) interface{}
-
-	// Visit a parse tree produced by StackParser#logicalExpression.
-	VisitLogicalExpression(ctx *LogicalExpressionContext) interface{}
-
-	// Visit a parse tree produced by StackParser#stringConcatExpression.
-	VisitStringConcatExpression(ctx *StringConcatExpressionContext) interface{}
 }

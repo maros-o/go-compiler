@@ -1,6 +1,6 @@
 write "<Relational operators>";
 write "1<5: ", 1 < 5;
-//write "1>3.5: ", 1 > 3.5;
+write "1>3.5: ", 1 > 3.5;
 write "aa==aa: ", "aa"=="aa";
 write "aa==ab: ", "aa"=="ab";
 write "aa!=ab: ", "aa"!="ab";

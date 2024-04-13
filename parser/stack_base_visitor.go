@@ -1,4 +1,4 @@
-// Code generated from ./grammars/Stack.g4 by ANTLR 4.13.1. DO NOT EDIT.
+// Code generated from ./Stack.g4 by ANTLR 4.13.1. DO NOT EDIT.
 
 package parser // Stack
 
@@ -24,11 +24,7 @@ func (v *BaseStackVisitor) VisitFloatLiteral(ctx *FloatLiteralContext) interface
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseStackVisitor) VisitTrueLiteral(ctx *TrueLiteralContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseStackVisitor) VisitFalseLiteral(ctx *FalseLiteralContext) interface{} {
+func (v *BaseStackVisitor) VisitBoolLiteral(ctx *BoolLiteralContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -80,15 +76,19 @@ func (v *BaseStackVisitor) VisitMulDivModExpression(ctx *MulDivModExpressionCont
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseStackVisitor) VisitIdExpression(ctx *IdExpressionContext) interface{} {
+func (v *BaseStackVisitor) VisitDotExpression(ctx *DotExpressionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseStackVisitor) VisitAddSubExpression(ctx *AddSubExpressionContext) interface{} {
+func (v *BaseStackVisitor) VisitUminusExpression(ctx *UminusExpressionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
 func (v *BaseStackVisitor) VisitAssignExpression(ctx *AssignExpressionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseStackVisitor) VisitNotExpression(ctx *NotExpressionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
@@ -100,18 +100,26 @@ func (v *BaseStackVisitor) VisitParenExpression(ctx *ParenExpressionContext) int
 	return v.VisitChildren(ctx)
 }
 
-func (v *BaseStackVisitor) VisitUnaryExpression(ctx *UnaryExpressionContext) interface{} {
+func (v *BaseStackVisitor) VisitOrExpression(ctx *OrExpressionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseStackVisitor) VisitAndExpression(ctx *AndExpressionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseStackVisitor) VisitIdExpression(ctx *IdExpressionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseStackVisitor) VisitAddSubExpression(ctx *AddSubExpressionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
+func (v *BaseStackVisitor) VisitEqualityExpression(ctx *EqualityExpressionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
 func (v *BaseStackVisitor) VisitLiteralExpression(ctx *LiteralExpressionContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseStackVisitor) VisitLogicalExpression(ctx *LogicalExpressionContext) interface{} {
-	return v.VisitChildren(ctx)
-}
-
-func (v *BaseStackVisitor) VisitStringConcatExpression(ctx *StringConcatExpressionContext) interface{} {
 	return v.VisitChildren(ctx)
 }
