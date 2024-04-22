@@ -227,6 +227,8 @@ func (v *Visitor) VisitMulDivModExpression(c *parser.MulDivModExpressionContext)
 	if !ok {
 		return nil
 	}
+	instructionLenAfterLeft := len(v.instructions)
+
 	right, ok := v.Visit(c.Expression(1)).(Variable)
 	if !ok {
 		return nil
@@ -238,14 +240,13 @@ func (v *Visitor) VisitMulDivModExpression(c *parser.MulDivModExpressionContext)
 		return nil
 	}
 	if left.typeTokenIndex == parser.StackLexerINT && right.typeTokenIndex == parser.StackLexerFLOAT {
-		pop := v.instructions[len(v.instructions)-1]
-		v.instructions = v.instructions[:len(v.instructions)-1]
-		v.instructions = append(v.instructions, "itof")
-		v.instructions = append(v.instructions, pop)
+		v.instructions = append(v.instructions[:instructionLenAfterLeft+1], v.instructions[instructionLenAfterLeft:]...)
+		v.instructions[instructionLenAfterLeft] = "itof"
 		left.typeTokenIndex = parser.StackLexerFLOAT
 	}
 	if left.typeTokenIndex == parser.StackLexerFLOAT && right.typeTokenIndex == parser.StackLexerINT {
 		v.instructions = append(v.instructions, "itof")
+		right.typeTokenIndex = parser.StackLexerFLOAT
 	}
 	v.instructions = append(v.instructions, fmt.Sprintf("%s", opToInstruction[c.GetOp().GetTokenType()]))
 	return left
@@ -256,16 +257,16 @@ func (v *Visitor) VisitAddSubExpression(c *parser.AddSubExpressionContext) inter
 	if !ok {
 		return nil
 	}
+	instructionLenAfterLeft := len(v.instructions)
+
 	right, ok := v.Visit(c.Expression(1)).(Variable)
 	if !ok {
 		return nil
 	}
 
 	if left.typeTokenIndex == parser.StackLexerINT && right.typeTokenIndex == parser.StackLexerFLOAT {
-		pop := v.instructions[len(v.instructions)-1]
-		v.instructions = v.instructions[:len(v.instructions)-1]
-		v.instructions = append(v.instructions, "itof")
-		v.instructions = append(v.instructions, pop)
+		v.instructions = append(v.instructions[:instructionLenAfterLeft+1], v.instructions[instructionLenAfterLeft:]...)
+		v.instructions[instructionLenAfterLeft] = "itof"
 		left.typeTokenIndex = parser.StackLexerFLOAT
 	}
 	if left.typeTokenIndex == parser.StackLexerFLOAT && right.typeTokenIndex == parser.StackLexerINT {
@@ -303,16 +304,16 @@ func (v *Visitor) VisitComparisonExpression(c *parser.ComparisonExpressionContex
 	if !ok {
 		return nil
 	}
+	instructionLenAfterLeft := len(v.instructions)
+
 	right, ok := v.Visit(c.Expression(1)).(Variable)
 	if !ok {
 		return nil
 	}
 
 	if left.typeTokenIndex == parser.StackLexerINT && right.typeTokenIndex == parser.StackLexerFLOAT {
-		pop := v.instructions[len(v.instructions)-1]
-		v.instructions = v.instructions[:len(v.instructions)-1]
-		v.instructions = append(v.instructions, "itof")
-		v.instructions = append(v.instructions, pop)
+		v.instructions = append(v.instructions[:instructionLenAfterLeft+1], v.instructions[instructionLenAfterLeft:]...)
+		v.instructions[instructionLenAfterLeft] = "itof"
 		left.typeTokenIndex = parser.StackLexerFLOAT
 	}
 	if left.typeTokenIndex == parser.StackLexerFLOAT && right.typeTokenIndex == parser.StackLexerINT {
@@ -347,7 +348,7 @@ func (v *Visitor) VisitEqualityExpression(c *parser.EqualityExpressionContext) i
 		v.instructions = append(v.instructions, "eq")
 		v.instructions = append(v.instructions, "not")
 	} else {
-		v.instructions = append(v.instructions, fmt.Sprintf("%s", opToInstruction[op]))
+		v.instructions = append(v.instructions, fmt.Sprintf("%s", opToInstruction[c.GetOp().GetTokenType()]))
 	}
 	left.typeTokenIndex = parser.StackLexerBOOL
 	return left

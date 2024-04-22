@@ -7,17 +7,17 @@ import (
 	"strings"
 )
 
-type Stack struct {
+type VM struct {
 	data      []interface{}
 	labels    map[int]int
 	variables map[string]Variable
 }
 
-func (s *Stack) Push(item interface{}) {
+func (s *VM) Push(item interface{}) {
 	s.data = append(s.data, item)
 }
 
-func (s *Stack) Pop() interface{} {
+func (s *VM) Pop() interface{} {
 	if len(s.data) == 0 {
 		return nil
 	}
@@ -26,7 +26,7 @@ func (s *Stack) Pop() interface{} {
 	return item
 }
 
-func (s *Stack) PopTwo() (interface{}, interface{}) {
+func (s *VM) PopTwo() (interface{}, interface{}) {
 	if len(s.data) < 2 {
 		return nil, nil
 	}
@@ -36,7 +36,7 @@ func (s *Stack) PopTwo() (interface{}, interface{}) {
 	return a, b
 }
 
-func (s *Stack) PrintStack() {
+func (s *VM) PrintVM() {
 	fmt.Printf("[")
 	for i := 0; i < len(s.data); i++ {
 		fmt.Printf("%v", s.data[i])
@@ -47,7 +47,7 @@ func (s *Stack) PrintStack() {
 	fmt.Printf("]\n")
 }
 
-func (s *Stack) IsEmpty() bool {
+func (s *VM) IsEmpty() bool {
 	return len(s.data) == 0
 }
 
@@ -75,7 +75,7 @@ func splitInstruction(instruction string) []string {
 	return parts
 }
 
-func (s *Stack) Evaluate(instructions []string) {
+func (s *VM) Evaluate(instructions []string) {
 	s.data = make([]interface{}, 0)
 	s.labels = make(map[int]int)
 	s.variables = make(map[string]Variable)
@@ -263,6 +263,6 @@ func (s *Stack) Evaluate(instructions []string) {
 		}
 	}
 	if !s.IsEmpty() {
-		panic("Stack is not empty")
+		panic("VM is not empty")
 	}
 }

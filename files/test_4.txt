@@ -1,0 +1,38 @@
+push S "<First>"
+print 1
+push I 1
+push I 2
+lt I
+pop
+push S "<Second>"
+print 1
+push I 1
+itof
+push F 2.2
+lt F
+pop
+push S "<Third>"
+print 1
+push S "a"
+push S "b"
+eq S
+pop
+push S "<Fourth>"
+print 1
+push I 1
+itof
+push I 2
+itof
+push F 3.3
+mul F
+add F
+pop
+push S "<Fifth>"
+print 1
+push I 1
+push I 2
+add I
+itof
+push F 3.3
+mul F
+pop

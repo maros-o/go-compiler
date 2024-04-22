@@ -1,0 +1,14 @@
+write "<First>";
+1 < 2;
+
+write "<Second>";
+1 < 2.2;
+
+write "<Third>";
+"a"=="b";
+
+write "<Fourth>";
+1 + 2 * 3.3;
+
+write "<Fifth>";
+(1 + 2) * 3.3;

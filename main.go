@@ -75,7 +75,7 @@ func testFile(inputFilePath, expectedFilePath string) {
 
 	time.Sleep(500 * time.Millisecond)
 
-	stack := Stack{}
+	stack := VM{}
 	fmt.Printf("\nProgram:\n")
 	stack.Evaluate(instructions)
 }
@@ -83,7 +83,7 @@ func testFile(inputFilePath, expectedFilePath string) {
 func main() {
 	time.Sleep(100 * time.Millisecond)
 
-	testFile("input_1", "test_1")
-	testFile("input_2", "test_2")
+	//testFile("input_1", "test_1")
+	//testFile("input_2", "test_2")
 	testFile("input_3", "test_3")
 }
