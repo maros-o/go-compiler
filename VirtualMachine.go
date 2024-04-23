@@ -36,7 +36,7 @@ func (vm *VM) PopTwo() (interface{}, interface{}) {
 	return a, b
 }
 
-func (vm *VM) PrintVM() {
+func (vm *VM) Print() {
 	fmt.Printf("[")
 	for i := 0; i < len(vm.data); i++ {
 		fmt.Printf("%v", vm.data[i])
